@@ -26,12 +26,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final CocktailDbDao dao = new CocktailDbDao();
+        CocktailDbDao.initializeInstance();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Cocktail cocktail = dao.getRandomCocktail();
-                ArrayList<Cocktail> cocktails = dao.getPopularCocktails();
+                Cocktail cocktail = CocktailDbDao.getRandomCocktail();
+                ArrayList<Cocktail> cocktails = CocktailDbDao.getPopularCocktails();
                 int i = 0;
             }
         }).start();
