@@ -1,4 +1,4 @@
-package com.vivekvishwanath.bitters;
+package com.vivekvishwanath.bitters.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +37,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.daos.CocktailDbDao;
+import com.vivekvishwanath.bitters.daos.GoogleAuthDao;
 import com.vivekvishwanath.bitters.models.Cocktail;
 
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 2;
     private Context context;
+    private GoogleAuthDao googleAuthDao;
 
     private View.OnClickListener buttonGoogleListener = new View.OnClickListener() {
         @Override
@@ -67,21 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         buttonGoogle = findViewById(R.id.button_google);
         buttonGoogle.setOnClickListener(buttonGoogleListener);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
         mAuth = FirebaseAuth.getInstance();
+        googleAuthDao = new GoogleAuthDao(context);
 
     }
 
@@ -94,51 +84,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void buttonGoogleClicked() {
-        signIn();
-    }
-
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        googleAuthDao.signIn();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == GoogleAuthDao.RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
             }
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+            googleAuthDao.handleSignInResult(task);
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            firebaseAuthWithGoogle(account);
-            // successful sign in, start maim activity
-        } catch (ApiException e) {
-            Log.i("error", e.getMessage());
-            // handle unsuccessful sign in
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            int i = 0;
-                        } else {
-                            Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
-    }
 }
