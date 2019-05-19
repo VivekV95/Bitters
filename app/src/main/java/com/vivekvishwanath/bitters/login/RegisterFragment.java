@@ -27,6 +27,7 @@ public class RegisterFragment extends Fragment {
     private EditText editTextPassword;
     private EditText editTextRetypePassword;
     private Button buttonRegister;
+    private Context context;
 
     private View.OnClickListener registerListener = new View.OnClickListener() {
         @Override
@@ -34,6 +35,14 @@ public class RegisterFragment extends Fragment {
             buttonRegisterClicked();
         }
     };
+
+    private void buttonRegisterClicked() {
+        if (checkFields()) {
+            boolean accountCreated = authDao.registerAccount(editTextEmail.getText().toString()
+                    , editTextPassword.getText().toString(), editTextName.getText().toString());
+            int i = 0;
+        }
+    }
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -59,14 +68,17 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        context = getActivity();
 
         editTextName = view.findViewById(R.id.edit_text_name_register);
         editTextEmail = view.findViewById(R.id.edit_text_email_register);
         editTextPassword = view.findViewById(R.id.edit_text_password_register);
         editTextRetypePassword = view.findViewById(R.id.edit_text_retype_password_register);
-        buttonRegister = view.findViewById(R.id.button_register);
 
-        authDao = new FirebaseAuthDao(getActivity());
+        buttonRegister = view.findViewById(R.id.button_register);
+        buttonRegister.setOnClickListener(registerListener);
+
+        authDao = new FirebaseAuthDao(context);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,10 +118,6 @@ public class RegisterFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    private void buttonRegisterClicked() {
-
     }
 
     private boolean checkFields() {
