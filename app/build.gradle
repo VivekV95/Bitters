@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\zoso_\\Documents\\AndPortfolioKeys\\newbitters.keystore.jks')
+            storePassword 'mrjzain210'
+            keyAlias = 'bitters_release'
+            keyPassword 'mrjzain210'
+        }
+        debug {
+            storeFile file('C:\\Users\\zoso_\\Documents\\AndPortfolioKeys\\newbitters.keystore.jks')
+            storePassword 'mrjzain210'
+            keyAlias = 'bitters_debug'
+            keyPassword 'mrjzain210'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.vivekvishwanath.bitters"
@@ -14,6 +28,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = true
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 }
@@ -30,5 +49,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
 }
+
+apply plugin: 'com.google.gms.google-services'

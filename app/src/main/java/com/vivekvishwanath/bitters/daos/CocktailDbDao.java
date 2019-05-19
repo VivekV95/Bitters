@@ -129,7 +129,7 @@ public class CocktailDbDao {
 
     public static ArrayList<Cocktail> getCocktailById(String id) {
         if (retrofit != null && gson != null && cocktailDbInterface != null) {
-            Call<JsonElement> call = cocktailDbInterface.getCocktailById(id); 
+            Call<JsonElement> call = cocktailDbInterface.getCocktailById(id);
             try {
                 JsonElement jsonElement = call.execute().body();
                 if (jsonElement != null) {
