@@ -27,6 +27,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
 import com.vivekvishwanath.bitters.apis.GoogleAuthDao;
+import com.vivekvishwanath.bitters.models.Cocktail;
+import com.vivekvishwanath.bitters.models.Ingredients;
+import com.vivekvishwanath.bitters.sqlite.BittersSqlDbDao;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity
         implements RegisterFragment.OnFragmentInteractionListener {
@@ -133,6 +138,10 @@ public class LoginActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         googleAuthDao = new GoogleAuthDao(context);
         FirebaseAuthDao.initializeInstance(context);
+
+        BittersSqlDbDao.initializeInstance(context);
+        Cocktail cocktail = BittersSqlDbDao.readCocktail(123);
+        int i = 0;
     }
 
     @Override

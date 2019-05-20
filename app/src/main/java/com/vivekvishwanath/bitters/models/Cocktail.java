@@ -47,7 +47,7 @@ public class Cocktail {
     }
 
     public Cocktail() {
-
+        ingredients = new Ingredients();
     }
 
     public String getDrinkId() {
