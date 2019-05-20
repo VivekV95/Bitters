@@ -25,11 +25,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
+import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
 import com.vivekvishwanath.bitters.apis.GoogleAuthDao;
 import com.vivekvishwanath.bitters.models.Cocktail;
-import com.vivekvishwanath.bitters.models.Ingredients;
-import com.vivekvishwanath.bitters.sqlite.BittersSqlDbDao;
+import com.vivekvishwanath.bitters.models.User;
+import com.vivekvishwanath.bitters.views.MainActivity;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity
 
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
+    User user;
     private Context context;
     private GoogleAuthDao googleAuthDao;
     public static final String REGISTER_FRAGMENT_TAG = "register_fragment";
@@ -99,7 +101,9 @@ public class LoginActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(context, "Sign in successful!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(context, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
                             }
                         });
                         return;
@@ -120,7 +124,7 @@ public class LoginActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         context = this;
 
 
@@ -138,9 +142,6 @@ public class LoginActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         googleAuthDao = new GoogleAuthDao(context);
         FirebaseAuthDao.initializeInstance(context);
-
-        BittersSqlDbDao.initializeInstance(context);
-        
     }
 
     @Override
