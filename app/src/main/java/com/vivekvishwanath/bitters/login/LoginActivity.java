@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -26,12 +28,17 @@ import com.vivekvishwanath.bitters.daos.GoogleAuthDao;
 public class LoginActivity extends AppCompatActivity
         implements RegisterFragment.OnFragmentInteractionListener {
 
-    SignInButton buttonGoogle;
     FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
     private Context context;
     private GoogleAuthDao googleAuthDao;
-    private TextView textViewRegister;
     public static final String REGISTER_FRAGMENT_TAG = "register_fragment";
+
+    private SignInButton buttonGoogle;
+    private TextView textViewRegister;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private Button buttonSignIn;
 
     private View.OnClickListener buttonGoogleListener = new View.OnClickListener() {
         @Override
@@ -56,12 +63,21 @@ public class LoginActivity extends AppCompatActivity
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.register_fragment_container
-                , fragment ,REGISTER_FRAGMENT_TAG);
+                , fragment , REGISTER_FRAGMENT_TAG);
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
+    private View.OnClickListener buttonSignInListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            buttonSignInClicked();
+        }
+    };
 
+    private void buttonSignInClicked() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,18 +88,23 @@ public class LoginActivity extends AppCompatActivity
 
         textViewRegister = findViewById(R.id.text_view_register);
         textViewRegister.setOnClickListener(textViewRegisterListener);
+
         buttonGoogle = findViewById(R.id.button_google);
         buttonGoogle.setOnClickListener(buttonGoogleListener);
 
+        editTextEmail = findViewById(R.id.edit_text_email);
+        editTextPassword = findViewById(R.id.edit_text_password);
+
+        buttonSignIn = findViewById(R.id.button_sign_in);
+        buttonSignIn.setOnClickListener(buttonSignInListener);
         mAuth = FirebaseAuth.getInstance();
         googleAuthDao = new GoogleAuthDao(context);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        firebaseUser = mAuth.getCurrentUser();
     }
 
     @Override

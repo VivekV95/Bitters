@@ -5,7 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,10 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.daos.FirebaseAuthDao;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.vivekvishwanath.bitters.login.LoginActivity.REGISTER_FRAGMENT_TAG;
 
 public class RegisterFragment extends Fragment {
 
@@ -38,9 +45,31 @@ public class RegisterFragment extends Fragment {
 
     private void buttonRegisterClicked() {
         if (checkFields()) {
-            boolean accountCreated = authDao.registerAccount(editTextEmail.getText().toString()
+            authDao.registerAccount(editTextEmail.getText().toString()
                     , editTextPassword.getText().toString(), editTextName.getText().toString());
-            int i = 0;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if (authDao.getAccounCreated()) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Snackbar.make(getView(), R.string.successful_registration
+                                            , Snackbar.LENGTH_LONG).show();
+                                    getActivity().onBackPressed();
+                                }
+                            });
+                            return;
+                        }
+                    }
+                }
+            }).start();
         }
     }
 
@@ -81,12 +110,6 @@ public class RegisterFragment extends Fragment {
         authDao = new FirebaseAuthDao(context);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {

@@ -1,6 +1,6 @@
 package com.vivekvishwanath.bitters.daos;
 
-import android.content.Context; 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -14,41 +14,45 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vivekvishwanath.bitters.models.User;
 
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class FirebaseAuthDao {
 
     private FirebaseAuth mAuth;
     private Context context;
     private DatabaseReference mDatabase;
-    private boolean accounCreated;
+    private AtomicBoolean accounCreated;
 
     public FirebaseAuthDao(Context context) {
         this.context = context;
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        accounCreated = false;
+        accounCreated = new AtomicBoolean(false);
     }
 
-    public boolean registerAccount(String email, String password, final String name) {
+    public void registerAccount(String email, String password, final String name) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUserInfo(user, name);
-                            User newUser = new User(user.getDisplayName(), user.getEmail());
-                            mDatabase.child("users").child(user.getUid()).setValue(newUser);
-                            accounCreated = true;
+                            boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
+                            if (isNew) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUserRegistrationInfo(user, name);
+                                User newUser = new User(name, user.getEmail());
+                                mDatabase.child("users").child(user.getUid()).setValue(newUser);
+                                accounCreated.set(true);
+                            }
                         } else {
-                            accounCreated = false;
+                            accounCreated.set(false);
                         }
                     }
                 });
-
-        return accounCreated;
     }
 
-    private void updateUserInfo(FirebaseUser user, String name) {
+    private void updateUserRegistrationInfo(FirebaseUser user, String name) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
@@ -63,4 +67,9 @@ public class FirebaseAuthDao {
                     }
                 });
     }
+
+    public boolean getAccounCreated() {
+        return accounCreated.get();
+    }
+
 }

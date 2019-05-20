@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Bitters</string>
     <string name="client_id">383366225765-6ah1vg40prcfb8p4obf7eo7ttnsnuei3.apps.googleusercontent.com</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="successful_registration">Your account was created! Login to start mixing!</string>
 </resources>
