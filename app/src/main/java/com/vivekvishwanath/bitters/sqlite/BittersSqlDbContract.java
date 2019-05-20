@@ -2,7 +2,7 @@ package com.vivekvishwanath.bitters.sqlite;
 
 import android.provider.BaseColumns;
 
-public class CocktailSqlDbContract {
+public class BittersSqlDbContract {
     public static class CocktailEntry implements BaseColumns {
         public static final String TABLE_NAME = "cocktails";
         public static final String COLUMN_NAME_DRINK_NAME = "strDrink";
