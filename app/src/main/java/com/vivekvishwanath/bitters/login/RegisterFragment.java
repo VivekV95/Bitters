@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.vivekvishwanath.bitters.R;
-import com.vivekvishwanath.bitters.daos.FirebaseAuthDao;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static com.vivekvishwanath.bitters.login.LoginActivity.REGISTER_FRAGMENT_TAG;
+import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
 
 public class RegisterFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    FirebaseAuthDao authDao;
-
     private EditText editTextName;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -45,7 +36,7 @@ public class RegisterFragment extends Fragment {
 
     private void buttonRegisterClicked() {
         if (checkFields()) {
-            authDao.registerAccount(editTextEmail.getText().toString()
+            FirebaseAuthDao.registerAccount(editTextEmail.getText().toString()
                     , editTextPassword.getText().toString(), editTextName.getText().toString());
             new Thread(new Runnable() {
                 @Override
@@ -56,7 +47,7 @@ public class RegisterFragment extends Fragment {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        if (authDao.getAccounCreated()) {
+                        if (FirebaseAuthDao.getAccountCreated()) {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -107,7 +98,6 @@ public class RegisterFragment extends Fragment {
         buttonRegister = view.findViewById(R.id.button_register);
         buttonRegister.setOnClickListener(registerListener);
 
-        authDao = new FirebaseAuthDao(context);
     }
 
 

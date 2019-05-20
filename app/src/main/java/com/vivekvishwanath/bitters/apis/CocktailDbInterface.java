@@ -1,10 +1,6 @@
-package com.vivekvishwanath.bitters.daos;
+package com.vivekvishwanath.bitters.apis;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.vivekvishwanath.bitters.models.Cocktail;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

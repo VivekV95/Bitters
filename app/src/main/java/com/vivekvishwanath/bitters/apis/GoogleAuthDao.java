@@ -1,4 +1,4 @@
-package com.vivekvishwanath.bitters.daos;
+package com.vivekvishwanath.bitters.apis;
 
 import android.app.Activity;
 import android.content.Context;

@@ -2,6 +2,8 @@ package com.vivekvishwanath.bitters.models;
 
 public class Ingredients {
 
+    private int ingredientsId;
+
     private String strIngredient1;
     private String strIngredient2;
     private String strIngredient3;
@@ -33,6 +35,18 @@ public class Ingredients {
     private String strMeasure13;
     private String strMeasure14;
     private String strMeasure15;
+
+    public Ingredients() {
+
+    }
+
+    public int getIngredientsId() {
+        return ingredientsId;
+    }
+
+    public void setIngredientsId(int ingredientsId) {
+        this.ingredientsId = ingredientsId;
+    }
 
     public String getStrIngredient1() {
         return strIngredient1;

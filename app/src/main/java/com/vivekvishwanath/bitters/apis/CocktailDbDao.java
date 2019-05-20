@@ -1,4 +1,4 @@
-package com.vivekvishwanath.bitters.daos;
+package com.vivekvishwanath.bitters.apis;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

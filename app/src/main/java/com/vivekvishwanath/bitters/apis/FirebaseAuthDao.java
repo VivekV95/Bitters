@@ -1,8 +1,7 @@
-package com.vivekvishwanath.bitters.daos;
+package com.vivekvishwanath.bitters.apis;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -14,24 +13,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vivekvishwanath.bitters.models.User;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FirebaseAuthDao {
 
-    private FirebaseAuth mAuth;
-    private Context context;
-    private DatabaseReference mDatabase;
-    private AtomicBoolean accounCreated;
+    private static FirebaseAuth mAuth;
+    private static FirebaseUser firebaseUser;
+    private static Context context;
+    private static DatabaseReference mDatabase;
+    private static AtomicBoolean accountCreated;
+    private static AtomicBoolean accountSignedIn;
 
-    public FirebaseAuthDao(Context context) {
-        this.context = context;
+    public static void initializeInstance(Context c) {
+        context = c;
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        accounCreated = new AtomicBoolean(false);
+        accountCreated = new AtomicBoolean(false);
+        accountSignedIn = new AtomicBoolean(false);
+        firebaseUser = mAuth.getCurrentUser();
     }
 
-    public void registerAccount(String email, String password, final String name) {
+    public static void registerAccount(String email, String password, final String name) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -43,33 +45,45 @@ public class FirebaseAuthDao {
                                 updateUserRegistrationInfo(user, name);
                                 User newUser = new User(name, user.getEmail());
                                 mDatabase.child("users").child(user.getUid()).setValue(newUser);
-                                accounCreated.set(true);
+                                accountCreated.set(true);
                             }
                         } else {
-                            accounCreated.set(false);
+                            accountCreated.set(false);
                         }
                     }
                 });
     }
 
-    private void updateUserRegistrationInfo(FirebaseUser user, String name) {
+    private static void updateUserRegistrationInfo(FirebaseUser user, String name) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
 
-        user.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+        user.updateProfile(profileUpdates);
+    }
+
+    public static void signIn(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(context, "User name added", Toast.LENGTH_SHORT);
+                            firebaseUser = mAuth.getCurrentUser();
+                            FirebaseDatabaseDao.initializeInstance(firebaseUser);
+                            accountSignedIn.set(true);
+                        } else {
+                            accountSignedIn.set(false);
                         }
                     }
                 });
     }
 
-    public boolean getAccounCreated() {
-        return accounCreated.get();
+    public static boolean getAccountCreated() {
+        return accountCreated.get();
+    }
+
+    public static boolean getAccountSignedIn() {
+        return accountSignedIn.get();
     }
 
 }
