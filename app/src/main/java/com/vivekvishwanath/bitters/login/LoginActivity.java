@@ -140,8 +140,7 @@ public class LoginActivity extends AppCompatActivity
         FirebaseAuthDao.initializeInstance(context);
 
         BittersSqlDbDao.initializeInstance(context);
-        Cocktail cocktail = BittersSqlDbDao.readCocktail(123);
-        int i = 0;
+        
     }
 
     @Override

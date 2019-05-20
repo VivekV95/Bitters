@@ -342,6 +342,28 @@ public class BittersSqlDbDao {
         }
     }
 
+    public static void deleteCocktail(Cocktail cocktail) {
+        if (db != null) {
+            String whereClause = String.format("%s = %s"
+                    , BittersSqlDbContract.CocktailEntry._ID, cocktail.getDrinkId());
+            String query = String.format("SELECT * FROM %s WHERE %s"
+                    , BittersSqlDbContract.CocktailEntry.TABLE_NAME, whereClause);
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor.getCount() == 1) {
+                db.delete(BittersSqlDbContract.CocktailEntry.TABLE_NAME, whereClause, null);
+                whereClause = String.format("%s = %s"
+                , BittersSqlDbContract.IngredientEntry._ID, cocktail.getIngredients().getIngredientsId());
+                query = String.format("SELECT * FROM %s WHERE %s"
+                , BittersSqlDbContract.IngredientEntry.TABLE_NAME, whereClause);
+                cursor = db.rawQuery(query, null);
+                if (cursor.getCount() == 1) {
+                    db.delete(BittersSqlDbContract.IngredientEntry.TABLE_NAME, whereClause, null);
+                }
+            }
+            cursor.close();
+        }
+    }
+
 
     public static ContentValues insertCocktailValues(Cocktail cocktail) {
         ContentValues cocktailValues = new ContentValues();
