@@ -6,6 +6,9 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     public static CocktailViewModel viewModel;
 
+    private FragmentManager fragmentManager;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -39,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_popular: {
                     item.setChecked(!item.isChecked());
                     if (item.isChecked()) {
+                        PopularFragment fragment = new PopularFragment();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.choice_fragment_container, fragment)
+                                .commit();
 
                     }
                 }
@@ -68,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(CocktailViewModel.class);
         viewModel.loadData(this, firebaseUser);
+
+        fragmentManager = getSupportFragmentManager();
     }
 
 }
