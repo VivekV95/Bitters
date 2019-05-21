@@ -127,13 +127,13 @@ public class CocktailDbDao {
         return null;
     }
 
-    public static ArrayList<Cocktail> getCocktailById(String id) {
+    public static Cocktail getCocktailById(String id) {
         if (retrofit != null && gson != null && cocktailDbInterface != null) {
             Call<JsonElement> call = cocktailDbInterface.getCocktailById(id);
             try {
                 JsonElement jsonElement = call.execute().body();
                 if (jsonElement != null) {
-                    return getAllCocktailsFromJson(jsonElement);
+                    return getSingleCocktailFromJson(jsonElement);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

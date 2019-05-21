@@ -1,5 +1,9 @@
 package com.vivekvishwanath.bitters.views;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +15,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vivekvishwanath.bitters.R;
+import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
 import com.vivekvishwanath.bitters.apis.FirebaseDatabaseDao;
+import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.User;
+import com.vivekvishwanath.bitters.mvvm.CocktailRepository;
+import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private FirebaseUser firebaseUser;
+    public static CocktailViewModel viewModel;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,8 +58,11 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         firebaseUser = FirebaseAuthDao.getCurrentUser();
-        FirebaseDatabaseDao.initializeInstance(firebaseUser);
-        FirebaseAuthDao.getFavoriteCocktails();
+
+        viewModel = ViewModelProviders.of(this).get(CocktailViewModel.class);
+        viewModel.loadData(this, firebaseUser);
+        MutableLiveData<ArrayList<Cocktail>> cocktails = viewModel.getPopularCocktails();
+        int i = 0;
     }
 
 }
