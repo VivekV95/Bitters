@@ -36,15 +36,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
+                case R.id.navigation_popular: {
+                    item.setChecked(!item.isChecked());
+                    if (item.isChecked()) {
+
+                    }
+                }
+                case R.id.navigation_search: {
+                    item.setChecked(!item.isChecked());
+                }
+                case R.id.navigation_create: {
+                    item.setChecked(!item.isChecked());
+                }
+                case R.id.navigation_maps: {
+                    item.setChecked(!item.isChecked());
+                }
             }
             return false;
         }
@@ -57,12 +63,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setItemIconTintList(null);
         firebaseUser = FirebaseAuthDao.getCurrentUser();
 
         viewModel = ViewModelProviders.of(this).get(CocktailViewModel.class);
         viewModel.loadData(this, firebaseUser);
-        MutableLiveData<ArrayList<Cocktail>> cocktails = viewModel.getPopularCocktails();
-        int i = 0;
     }
 
 }

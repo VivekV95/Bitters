@@ -32,19 +32,20 @@ public class FirebaseAuthDao {
     private static FirebaseUser firebaseUser;
     private static Context context;
     private static DatabaseReference mDatabase;
-    private static AtomicBoolean accountCreated;
-    private static AtomicBoolean accountSignedIn;
 
     public static void initializeInstance(Context c) {
         context = c;
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        accountCreated = new AtomicBoolean(false);
-        accountSignedIn = new AtomicBoolean(false);
         firebaseUser = mAuth.getCurrentUser();
     }
 
-    public static void registerAccount(String email, String password, final String name) {
+    public interface RegistrationCallback {
+        void onRegistrationResult(boolean result);
+    }
+
+    public static void registerAccount(String email, String password, final String name
+            , final RegistrationCallback callback) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -56,10 +57,10 @@ public class FirebaseAuthDao {
                                 updateUserRegistrationInfo(user, name);
                                 User newUser = new User(name, user.getEmail());
                                 mDatabase.child("users").child(user.getUid()).setValue(newUser);
-                                accountCreated.set(true);
+                                callback.onRegistrationResult(true);
                             }
                         } else {
-                            accountCreated.set(false);
+                            callback.onRegistrationResult(false);
                         }
                     }
                 });
@@ -73,28 +74,23 @@ public class FirebaseAuthDao {
         user.updateProfile(profileUpdates);
     }
 
-    public static void signIn(String email, String password) {
+    public interface SignInCallback {
+        void onSignInResult(boolean result);
+    }
+
+    public static void signIn(String email, String password, final SignInCallback callback) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             firebaseUser = mAuth.getCurrentUser();
-                            accountSignedIn.set(true);
+                            callback.onSignInResult(true);
                         } else {
-                            accountSignedIn.set(false);
+                            callback.onSignInResult(false);
                         }
                     }
                 });
-    }
-
-
-    public static boolean getAccountCreated() {
-        return accountCreated.get();
-    }
-
-    public static boolean getAccountSignedIn() {
-        return accountSignedIn.get();
     }
 
     public static FirebaseUser getCurrentUser() {

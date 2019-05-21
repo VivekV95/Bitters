@@ -37,30 +37,20 @@ public class RegisterFragment extends Fragment {
     private void buttonRegisterClicked() {
         if (checkFields()) {
             FirebaseAuthDao.registerAccount(editTextEmail.getText().toString()
-                    , editTextPassword.getText().toString(), editTextName.getText().toString());
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                    , editTextPassword.getText().toString(), editTextName.getText().toString()
+                    , new FirebaseAuthDao.RegistrationCallback() {
+                        @Override
+                        public void onRegistrationResult(boolean result) {
+                            if (result) {
+                                Snackbar.make(getView(), R.string.successful_registration
+                                        , Snackbar.LENGTH_LONG).show();
+                                getActivity().onBackPressed();
+                            } else {
+                                Snackbar.make(getView(), R.string.unsuccessful_registration
+                                        , Snackbar.LENGTH_LONG).show();
+                            }
                         }
-                        if (FirebaseAuthDao.getAccountCreated()) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Snackbar.make(getView(), R.string.successful_registration
-                                            , Snackbar.LENGTH_LONG).show();
-                                    getActivity().onBackPressed();
-                                }
-                            });
-                            return;
-                        }
-                    }
-                }
-            }).start();
+                    });
         }
     }
 

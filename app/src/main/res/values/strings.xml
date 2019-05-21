@@ -2,6 +2,7 @@
     <string name="app_name">Bitters</string>
     <string name="client_id">383366225765-6ah1vg40prcfb8p4obf7eo7ttnsnuei3.apps.googleusercontent.com</string>
     <string name="successful_registration">Your account was created! Login to start mixing!</string>
+    <string name="unsuccessful_registration">Your account could not be created!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

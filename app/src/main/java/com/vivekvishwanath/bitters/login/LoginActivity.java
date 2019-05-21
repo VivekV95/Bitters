@@ -87,38 +87,18 @@ public class LoginActivity extends AppCompatActivity
 
     private void buttonSignInClicked() {
         FirebaseAuthDao.signIn(editTextEmail.getText().toString()
-                , editTextPassword.getText().toString());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                , editTextPassword.getText().toString(), new FirebaseAuthDao.SignInCallback() {
+                    @Override
+                    public void onSignInResult(boolean result) {
+                        if (result) {
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
+                        }
                     }
-                    if (FirebaseAuthDao.getAccountSignedIn()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(context, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            }
-                        });
-                        return;
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        return;
-                    }
-                }
-            }
-        }).start();
+                });
     }
 
     @Override
