@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,24 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
+import com.vivekvishwanath.bitters.Utils.CocktailUtils;
+import com.vivekvishwanath.bitters.adapters.CocktailListAdapter;
+import com.vivekvishwanath.bitters.adapters.IngredientListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
+import com.vivekvishwanath.bitters.models.Ingredient;
+
+import java.util.ArrayList;
 
 public class ViewCocktailFragment extends DialogFragment {
 
     private Cocktail cocktail;
     private TextView cocktailName;
     private ImageView cocktailImage;
+    ArrayList<Ingredient> ingredientList;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private IngredientListAdapter listAdapter;
 
     public ViewCocktailFragment() {
         // Required empty public constructor
@@ -55,5 +68,14 @@ public class ViewCocktailFragment extends DialogFragment {
         cocktailName = view.findViewById(R.id.view_cocktail_name);
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
         Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage);
+        ingredientList = CocktailUtils.convertCocktailIngredients(cocktail);
+
+        recyclerView = view.findViewById(R.id.recycler_view_ingredients);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new GridLayoutManager(getContext(), 3);
+        recyclerView.setLayoutManager(layoutManager);
+
+        listAdapter = new IngredientListAdapter(ingredientList);
+        recyclerView.setAdapter(listAdapter);
     }
 }

@@ -44,7 +44,7 @@ public class PopularFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = getView().findViewById(R.id.recycler_view);
+        recyclerView = getView().findViewById(R.id.recycler_view_popular);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);

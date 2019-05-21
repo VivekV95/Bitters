@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.vivekvishwanath.bitters.models.Cocktail;
+import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.models.Ingredients;
 
 import java.io.IOException;
@@ -21,6 +22,9 @@ public class CocktailDbDao {
 
     private static final String COCKTAIL_DB_BASE_URL =
             "https://www.thecocktaildb.com/api/json/v2/8673533/";
+    private static final String INGREDIENT_IMAGE_BASE_URL =
+            "https://www.thecocktaildb.com/images/ingredients/";
+    private static final String INGREDIENT_IMAGE_MEDIUM_ENDING = "-Medium.png";
     private static final String DRINKS_MEMBER_NAME = "drinks";
 
     public static void initializeInstance() {
@@ -165,5 +169,10 @@ public class CocktailDbDao {
             cocktails.add(cocktail);
         }
         return cocktails;
+    }
+
+    public static String getIngredientMediumUrl(String ingredientName) {
+        String url = INGREDIENT_IMAGE_BASE_URL + ingredientName + INGREDIENT_IMAGE_MEDIUM_ENDING;
+        return url;
     }
 }
