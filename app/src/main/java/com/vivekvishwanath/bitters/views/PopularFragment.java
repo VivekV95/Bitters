@@ -20,9 +20,6 @@ import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class PopularFragment extends Fragment {
 
     private RecyclerView recyclerView;

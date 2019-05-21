@@ -2,9 +2,12 @@ package com.vivekvishwanath.bitters.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cocktail {
+public class Cocktail implements Serializable {
+
+    public static final String SERIALIZABLE_OCCKTAIL_KEY = "cocktail";
 
     @SerializedName("idDrink")
     private String drinkId;
