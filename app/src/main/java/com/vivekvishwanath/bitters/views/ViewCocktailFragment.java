@@ -22,7 +22,6 @@ public class ViewCocktailFragment extends DialogFragment {
     private Cocktail cocktail;
     private TextView cocktailName;
     private ImageView cocktailImage;
-    private Spinner ingredientsSpinner;
 
     public ViewCocktailFragment() {
         // Required empty public constructor
@@ -56,7 +55,5 @@ public class ViewCocktailFragment extends DialogFragment {
         cocktailName = view.findViewById(R.id.view_cocktail_name);
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
         Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage);
-        ingredientsSpinner = view.findViewById(R.id.spinner_ingredients);
-        ingredientsSpinner.setPrompt(getString(R.string.ingredients_spinner_prompt));
     }
 }

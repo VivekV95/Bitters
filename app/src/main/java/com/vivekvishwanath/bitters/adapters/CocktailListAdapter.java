@@ -1,9 +1,6 @@
-package com.vivekvishwanath.bitters.views;
+package com.vivekvishwanath.bitters.adapters;
 
-import android.app.Activity;
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +16,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.models.Cocktail;
+import com.vivekvishwanath.bitters.views.ViewCocktailFragment;
 
 import java.util.ArrayList;
 
