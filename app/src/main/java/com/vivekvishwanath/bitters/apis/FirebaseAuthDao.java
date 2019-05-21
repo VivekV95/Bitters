@@ -2,6 +2,7 @@ package com.vivekvishwanath.bitters.apis;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
@@ -32,6 +33,8 @@ public class FirebaseAuthDao {
     private static FirebaseUser firebaseUser;
     private static Context context;
     private static DatabaseReference mDatabase;
+
+
 
     public static void initializeInstance(Context c) {
         context = c;

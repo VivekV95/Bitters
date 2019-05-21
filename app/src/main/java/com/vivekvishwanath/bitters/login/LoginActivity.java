@@ -2,6 +2,7 @@ package com.vivekvishwanath.bitters.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,30 +27,29 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
-import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
 import com.vivekvishwanath.bitters.apis.GoogleAuthDao;
-import com.vivekvishwanath.bitters.models.Cocktail;
-import com.vivekvishwanath.bitters.models.User;
 import com.vivekvishwanath.bitters.views.MainActivity;
-
-import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity
         implements RegisterFragment.OnFragmentInteractionListener {
 
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
-    User user;
     private Context context;
     private GoogleAuthDao googleAuthDao;
     public static final String REGISTER_FRAGMENT_TAG = "register_fragment";
+    private static final String PREFS_NAME = "Bitters_prefs";
+    private static final String PREFS_EMAIL_KEY = "Prefs_email";
+    private static final String PREFS_PASSWORD_KEY = "Prefs_password";
+    private static SharedPreferences preferences;
 
     private SignInButton buttonGoogle;
     private TextView textViewRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private Button buttonSignIn;
+    private CheckBox checkBoxRemember;
 
     private View.OnClickListener buttonGoogleListener = new View.OnClickListener() {
         @Override
@@ -86,19 +87,22 @@ public class LoginActivity extends AppCompatActivity
     };
 
     private void buttonSignInClicked() {
-        FirebaseAuthDao.signIn(editTextEmail.getText().toString()
-                , editTextPassword.getText().toString(), new FirebaseAuthDao.SignInCallback() {
-                    @Override
-                    public void onSignInResult(boolean result) {
-                        if (result) {
-                            Intent intent = new Intent(context, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+        if (checkFields()) {
+            handleLoginInfo();
+                FirebaseAuthDao.signIn(editTextEmail.getText().toString()
+                        , editTextPassword.getText().toString(), new FirebaseAuthDao.SignInCallback() {
+                            @Override
+                            public void onSignInResult(boolean result) {
+                                if (result) {
+                                    Intent intent = new Intent(context, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+        }
     }
 
     @Override
@@ -106,7 +110,7 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context = this;
-
+        preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
         textViewRegister = findViewById(R.id.text_view_register);
         textViewRegister.setOnClickListener(textViewRegisterListener);
@@ -116,6 +120,8 @@ public class LoginActivity extends AppCompatActivity
 
         editTextEmail = findViewById(R.id.edit_text_email);
         editTextPassword = findViewById(R.id.edit_text_password);
+
+        checkBoxRemember = findViewById(R.id.check_box_remember);
 
         buttonSignIn = findViewById(R.id.button_sign_in);
         buttonSignIn.setOnClickListener(buttonSignInListener);
@@ -128,6 +134,23 @@ public class LoginActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         firebaseUser = mAuth.getCurrentUser();
+
+        String email = preferences.getString(PREFS_EMAIL_KEY, null);
+        String pass = preferences.getString(PREFS_PASSWORD_KEY, null);
+        if (email != null && pass != null) {
+            FirebaseAuthDao.signIn(email, pass, new FirebaseAuthDao.SignInCallback() {
+                        @Override
+                        public void onSignInResult(boolean result) {
+                            if (result) {
+                                Intent intent = new Intent(context, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        }
     }
 
     @Override
@@ -154,5 +177,17 @@ public class LoginActivity extends AppCompatActivity
             return false;
         }
         return true;
+    }
+
+    private void handleLoginInfo() {
+        SharedPreferences.Editor editor = preferences.edit();
+        if (checkBoxRemember.isChecked()) {
+            editor.putString(PREFS_EMAIL_KEY, editTextEmail.getText().toString());
+            editor.putString(PREFS_PASSWORD_KEY, editTextPassword.getText().toString());
+            editor.apply();
+        } else {
+            editor.clear();
+            editor.apply();
+        }
     }
 }
