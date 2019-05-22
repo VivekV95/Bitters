@@ -78,11 +78,34 @@ public class FilterFragment extends Fragment {
                         , filterChoices);
         spinner.setPrompt(getString(R.string.filter_prompt));
         spinner.setAdapter(choicesAdapter);
+        spinner.setOnItemSelectedListener(spinnerListener);
 
         searchBar = view.findViewById(R.id.search_bar);
         searchBar.addTextChangedListener(searchBarWatcher);
     }
 
+    private AdapterView.OnItemSelectedListener spinnerListener =
+            new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (spinner.getSelectedItem().equals(getString(R.string.filter_random_title))) {
+                viewModel.getRandomCocktail().observe(getActivity(), new Observer<Cocktail>() {
+                    @Override
+                    public void onChanged(@Nullable Cocktail cocktail) {
+                        ArrayList<Cocktail> cocktails = new ArrayList<>();
+                        cocktails.add(cocktail);
+                        listAdapter = new CocktailListAdapter(cocktails);
+                        recyclerView.setAdapter(listAdapter);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
     private TextWatcher searchBarWatcher = new TextWatcher() {
         @Override
@@ -107,6 +130,16 @@ public class FilterFragment extends Fragment {
                     }
                 });
             }
+            if (choice.equals(getString(R.string.filter_ingredients_title))) {
+                viewModel.getCocktailsByIngredients(s.toString()).observe(getActivity(), new Observer<ArrayList<Cocktail>>() {
+                    @Override
+                    public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
+                        listAdapter = new CocktailListAdapter(cocktails);
+                        recyclerView.setAdapter(listAdapter);
+                    }
+                });
+            }
+
         }
     };
 

@@ -134,8 +134,12 @@ public class LoginActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         firebaseUser = mAuth.getCurrentUser();
-
-        String email = preferences.getString(PREFS_EMAIL_KEY, null);
+        if (firebaseUser != null) {
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        /* String email = preferences.getString(PREFS_EMAIL_KEY, null);
         String pass = preferences.getString(PREFS_PASSWORD_KEY, null);
         if (email != null && pass != null) {
             FirebaseAuthDao.signIn(email, pass, new FirebaseAuthDao.SignInCallback() {
@@ -150,7 +154,7 @@ public class LoginActivity extends AppCompatActivity
                             }
                         }
                     });
-        }
+        } */
     }
 
     @Override

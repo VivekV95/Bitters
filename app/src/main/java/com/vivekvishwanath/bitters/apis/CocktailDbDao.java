@@ -3,6 +3,9 @@ package com.vivekvishwanath.bitters.apis;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.models.Ingredients;
@@ -81,19 +84,27 @@ public class CocktailDbDao {
         return null;
     }
 
-    public static ArrayList<Cocktail> getCocktailsbyIngredient(String ingredient) {
+    public static ArrayList<String> getCocktailIdsByIngredient(String ingredient) {
+        ArrayList<String> cocktailIds = new ArrayList<>();
         if (retrofit != null && gson != null && cocktailDbInterface != null) {
             Call<JsonElement> call = cocktailDbInterface.getCocktailsByIngredient(ingredient);
             try {
                 JsonElement jsonElement = call.execute().body();
-                if (jsonElement != null) {
-                    return getAllCocktailsFromJson(jsonElement);
+                if (!(jsonElement.getAsJsonObject().get("drinks") instanceof JsonNull)
+                        && !(jsonElement.getAsJsonObject().get("drinks") instanceof JsonPrimitive)) {
+                    JsonArray jsonArray = jsonElement.getAsJsonObject()
+                            .getAsJsonArray(DRINKS_MEMBER_NAME);
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        String id = jsonArray.get(i).getAsJsonObject().get("idDrink").getAsString();
+                        cocktailIds.add(id);
+                    }
+                    return cocktailIds;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+        return cocktailIds;
     }
 
     public static ArrayList<Cocktail> getCocktailsbyGlass(String glass) {
@@ -160,13 +171,16 @@ public class CocktailDbDao {
 
     private static ArrayList<Cocktail> getAllCocktailsFromJson(JsonElement jsonElement) {
         ArrayList<Cocktail> cocktails = new ArrayList<>();
-        JsonArray jsonArray = jsonElement.getAsJsonObject()
-                .getAsJsonArray(DRINKS_MEMBER_NAME);
-        for (int i = 0; i < jsonArray.size(); i++) {
-            Cocktail cocktail = gson.fromJson(jsonArray.get(i), Cocktail.class);
-            Ingredients ingredients = gson.fromJson(jsonArray.get(i), Ingredients.class);
-            cocktail.setIngredients(ingredients);
-            cocktails.add(cocktail);
+        if (!(jsonElement.getAsJsonObject().get("drinks") instanceof JsonNull)
+                && !(jsonElement.getAsJsonObject().get("drinks") instanceof JsonPrimitive)) {
+            JsonArray jsonArray = jsonElement.getAsJsonObject()
+                    .getAsJsonArray(DRINKS_MEMBER_NAME);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                Cocktail cocktail = gson.fromJson(jsonArray.get(i), Cocktail.class);
+                Ingredients ingredients = gson.fromJson(jsonArray.get(i), Ingredients.class);
+                cocktail.setIngredients(ingredients);
+                cocktails.add(cocktail);
+            }
         }
         return cocktails;
     }

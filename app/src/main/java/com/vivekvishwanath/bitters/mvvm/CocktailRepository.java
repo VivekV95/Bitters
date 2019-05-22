@@ -1,6 +1,5 @@
 package com.vivekvishwanath.bitters.mvvm;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import com.google.firebase.auth.FirebaseUser;
@@ -91,7 +90,25 @@ public class CocktailRepository {
                 liveCocktails.postValue(cocktails);
             }
         }).start();
-        return liveCocktails; 
+        return liveCocktails;
     }
+
+    public MutableLiveData<ArrayList<Cocktail>> getCocktailsByIngredients(final String name) {
+        final MutableLiveData<ArrayList<Cocktail>> liveCocktails = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Cocktail> cocktails = new ArrayList<>();
+                liveCocktails.postValue(cocktails);
+                ArrayList<String> cocktailIds = CocktailDbDao.getCocktailIdsByIngredient(name);
+                for (int i = 0; i < cocktailIds.size(); i++) {
+                    cocktails.add(CocktailDbDao.getCocktailById(cocktailIds.get(i)));
+                }
+            }
+        }).start();
+        return liveCocktails;
+    }
+
+
 
 }

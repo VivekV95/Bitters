@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.loadData(this, firebaseUser);
 
         fragmentManager = getSupportFragmentManager();
+
     }
 
     @Override

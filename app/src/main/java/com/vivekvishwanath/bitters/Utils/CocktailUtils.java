@@ -15,7 +15,7 @@ public class CocktailUtils {
         Ingredient ingredient;
         ArrayList<Ingredient> ingredientList = new ArrayList<>();
         while(true) {
-            if (!ingredients.getStrIngredient1().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient1())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient1()
                         , ingredients.getStrMeasure1()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient1()));
@@ -23,7 +23,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient2().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient2())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient2()
                         , ingredients.getStrMeasure2()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient2()));
@@ -31,7 +31,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient3().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient3())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient3()
                         , ingredients.getStrMeasure3()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient3()));
@@ -39,7 +39,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient4().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient4())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient4()
                         , ingredients.getStrMeasure4()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient4()));
@@ -47,7 +47,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient5().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient5())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient5()
                         , ingredients.getStrMeasure5()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient5()));
@@ -55,7 +55,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient6().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient6())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient6()
                         , ingredients.getStrMeasure6()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient6()));
@@ -63,7 +63,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient7().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient7())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient7()
                         , ingredients.getStrMeasure7()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient7()));
@@ -71,7 +71,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient8().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient8())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient8()
                         , ingredients.getStrMeasure8()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient8()));
@@ -79,7 +79,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient9().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient9())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient9()
                         , ingredients.getStrMeasure9()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient9()));
@@ -87,7 +87,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient10().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient10())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient10()
                         , ingredients.getStrMeasure10()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient10()));
@@ -95,7 +95,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient11().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient11())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient11()
                         , ingredients.getStrMeasure11()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient11()));
@@ -103,7 +103,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient12().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient12())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient12()
                         , ingredients.getStrMeasure12()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient12()));
@@ -111,7 +111,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient13().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient13())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient13()
                         , ingredients.getStrMeasure13()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient13()));
@@ -119,7 +119,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient14().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient14())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient14()
                         , ingredients.getStrMeasure14()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient14()));
@@ -127,7 +127,7 @@ public class CocktailUtils {
             } else {
                 break;
             }
-            if (!ingredients.getStrIngredient15().equals("")) {
+            if (!isNullOrEmpty(ingredients.getStrIngredient15())) {
                 ingredient = new Ingredient(ingredients.getStrIngredient15()
                         , ingredients.getStrMeasure15()
                         , CocktailDbDao.getIngredientMediumUrl(ingredients.getStrIngredient15()));
@@ -141,8 +141,17 @@ public class CocktailUtils {
     }
 
     public static ArrayList<String> getInstructionList(Cocktail cocktail) {
-        String[] instructionArray = cocktail.getInstructions().split("\\.");
-        ArrayList<String> instructionsList = new ArrayList<>(Arrays.asList(instructionArray));
+        ArrayList<String> instructionsList = new ArrayList<>();
+        if (cocktail.getInstructions() != null) {
+            String[] instructionArray = cocktail.getInstructions().split("\\.");
+            instructionsList = new ArrayList<>(Arrays.asList(instructionArray));
+        }
         return instructionsList;
+    }
+
+    public static boolean isNullOrEmpty(String str) {
+        if(str != null && !str.isEmpty())
+            return false;
+        return true;
     }
 }
