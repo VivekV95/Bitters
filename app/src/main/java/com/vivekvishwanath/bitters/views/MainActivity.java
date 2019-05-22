@@ -42,16 +42,21 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_popular: {
-                    item.setChecked(!item.isChecked());
-                    if (item.isChecked()) {
+                    if (!item.isChecked()) {
                         PopularFragment fragment = new PopularFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
                                 .commit();
-
                     }
+                    item.setChecked(!item.isChecked());
                 }
                 case R.id.navigation_search: {
+                    if (!item.isChecked()) {
+                        FilterFragment fragment = new FilterFragment();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.choice_fragment_container, fragment)
+                                .commit();
+                    }
                     item.setChecked(!item.isChecked());
                 }
                 case R.id.navigation_create: {
@@ -81,4 +86,12 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        PopularFragment fragment = new PopularFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.choice_fragment_container, fragment)
+                .commit();
+    }
 }

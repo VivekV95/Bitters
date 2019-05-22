@@ -82,4 +82,16 @@ public class CocktailRepository {
         return randomLiveCocktail;
     }
 
+    public MutableLiveData<ArrayList<Cocktail>> getCocktailsByName(final String name) {
+        final MutableLiveData<ArrayList<Cocktail>> liveCocktails = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Cocktail> cocktails = CocktailDbDao.getCocktailsbyName(name);
+                liveCocktails.postValue(cocktails);
+            }
+        }).start();
+        return liveCocktails; 
+    }
+
 }
