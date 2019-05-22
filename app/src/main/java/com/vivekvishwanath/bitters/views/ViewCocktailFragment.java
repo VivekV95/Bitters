@@ -2,11 +2,14 @@ package com.vivekvishwanath.bitters.views;
 
 
 import android.app.Dialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +26,7 @@ import com.vivekvishwanath.bitters.Utils.CocktailUtils;
 import com.vivekvishwanath.bitters.adapters.IngredientListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
+import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 
 import java.util.ArrayList;
 
@@ -32,6 +36,7 @@ public class ViewCocktailFragment extends DialogFragment {
     private TextView cocktailName;
     private ImageView cocktailImage;
     private LinearLayout instructionsLayout;
+    private ConstraintLayout viewCocktailParent;
     ArrayList<Ingredient> ingredientList;
     ArrayList<String> instructionsList;
 
@@ -40,6 +45,7 @@ public class ViewCocktailFragment extends DialogFragment {
     private IngredientListAdapter listAdapter;
 
     private Context context;
+    private CocktailViewModel viewModel;
 
     public ViewCocktailFragment() {
         // Required empty public constructor
@@ -71,6 +77,9 @@ public class ViewCocktailFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         context = view.getContext();
+        viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
+
+        viewCocktailParent = view.findViewById(R.id.view_cocktail_layout);
 
         cocktailName = view.findViewById(R.id.view_cocktail_name);
         cocktailName.setText(cocktail.getDrinkName());
@@ -92,6 +101,13 @@ public class ViewCocktailFragment extends DialogFragment {
         instructionsList = CocktailUtils.getInstructionList(cocktail);
         addInstructions();
     }
+
+    View.OnLongClickListener favoriteListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            return false;
+        }
+    };
 
     private void addInstructions() {
         for (int i = 0; i < instructionsList.size(); i++) {

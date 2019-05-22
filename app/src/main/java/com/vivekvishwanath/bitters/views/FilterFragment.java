@@ -89,11 +89,22 @@ public class FilterFragment extends Fragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (spinner.getSelectedItem().equals(getString(R.string.filter_random_title))) {
-                viewModel.getRandomCocktail().observe(getActivity(), new Observer<Cocktail>() {
+                viewModel.getRandomCocktail().observe(getActivity()
+                        , new Observer<Cocktail>() {
                     @Override
                     public void onChanged(@Nullable Cocktail cocktail) {
                         ArrayList<Cocktail> cocktails = new ArrayList<>();
                         cocktails.add(cocktail);
+                        listAdapter = new CocktailListAdapter(cocktails);
+                        recyclerView.setAdapter(listAdapter);
+                    }
+                });
+            }
+            if (spinner.getSelectedItem().equals(getString(R.string.filter_alcoholic_title))) {
+                viewModel.getCocktailsByNoAlcohol().observe(getActivity()
+                        , new Observer<ArrayList<Cocktail>>() {
+                    @Override
+                    public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
                         listAdapter = new CocktailListAdapter(cocktails);
                         recyclerView.setAdapter(listAdapter);
                     }

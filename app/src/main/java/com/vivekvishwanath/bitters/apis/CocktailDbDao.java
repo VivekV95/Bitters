@@ -69,7 +69,7 @@ public class CocktailDbDao {
         return null;
     }
 
-    public static ArrayList<Cocktail> getCocktailsbyName(String name) {
+    public static ArrayList<Cocktail> getCocktailsByName(String name) {
         if (retrofit != null && gson != null && cocktailDbInterface != null) {
             Call<JsonElement> call = cocktailDbInterface.getCocktailsByName(name);
             try {
@@ -122,24 +122,27 @@ public class CocktailDbDao {
         return null;
     }
 
-    public static ArrayList<Cocktail> getCocktailsbyAlcohol(boolean isAlcoholic) {
+    public static ArrayList<String> getCocktailsbyNoAlcohol() {
+        ArrayList<String> cocktailIds = new ArrayList<>();
         if (retrofit != null && gson != null && cocktailDbInterface != null) {
-            Call<JsonElement> call;
-            if (isAlcoholic) {
-                call = cocktailDbInterface.getCocktailsByAlcoholic("Alcoholic");
-            } else {
-                call = cocktailDbInterface.getCocktailsByAlcoholic("Non_Alcoholic");
-            }
+            Call<JsonElement> call = cocktailDbInterface.getCocktailsByAlcoholic("Non_Alcoholic");
             try {
                 JsonElement jsonElement = call.execute().body();
-                if (jsonElement != null) {
-                    return getAllCocktailsFromJson(jsonElement);
+                if (!(jsonElement.getAsJsonObject().get("drinks") instanceof JsonNull)
+                        && !(jsonElement.getAsJsonObject().get("drinks") instanceof JsonPrimitive)) {
+                    JsonArray jsonArray = jsonElement.getAsJsonObject()
+                            .getAsJsonArray(DRINKS_MEMBER_NAME);
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        String id = jsonArray.get(i).getAsJsonObject().get("idDrink").getAsString();
+                        cocktailIds.add(id);
+                    }
+                    return cocktailIds;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+        return cocktailIds;
     }
 
     public static Cocktail getCocktailById(String id) {

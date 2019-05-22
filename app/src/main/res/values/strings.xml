@@ -14,5 +14,5 @@
     <string name="filter_name_title">Name</string>
     <string name="filter_ingredients_title">Ingredients</string>
     <string name="filter_glass_title">Glass</string>
-    <string name="filter_alcoholic_title">Alcoholic</string>
+    <string name="filter_alcoholic_title">Non-Alcoholic</string>
 </resources>

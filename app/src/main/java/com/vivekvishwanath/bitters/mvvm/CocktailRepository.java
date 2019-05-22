@@ -45,22 +45,33 @@ public class CocktailRepository {
         return cocktailsLiveData;
     }
 
+    public MutableLiveData<ArrayList<String>> getFavoriteIds() {
+        final MutableLiveData<ArrayList<String>> idsLiveData = new MutableLiveData<>();
+        FirebaseDatabaseDao.getFavoriteCocktailIds(new FirebaseDatabaseDao.FavoriteIdsCallback() {
+            @Override
+            public void onIdsObtained(ArrayList<String> ids) {
+                idsLiveData.postValue(ids);
+            }
+        });
+        return idsLiveData;
+    }
+
 
     public MutableLiveData<ArrayList<Cocktail>> getFavoriteCocktails() {
         final MutableLiveData<ArrayList<Cocktail>> cocktailsLiveData = new MutableLiveData<>();
 
         FirebaseDatabaseDao.getFavoriteCocktailIds(new FirebaseDatabaseDao.FavoriteIdsCallback() {
             @Override
-            public void onIdsObtained(final ArrayList<Integer> ids) {
+            public void onIdsObtained(final ArrayList<String> ids) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         ArrayList<Cocktail> favoriteCocktails = new ArrayList<>();
+                        cocktailsLiveData.postValue(favoriteCocktails);
                         for (int i = 0; i < ids.size(); i++ ) {
-                            Cocktail cocktail = CocktailDbDao.getCocktailById(Integer.toString(ids.get(i)));
+                            Cocktail cocktail = CocktailDbDao.getCocktailById(ids.get(i));
                             favoriteCocktails.add(cocktail);
                         }
-                        cocktailsLiveData.postValue(favoriteCocktails);
                     }
                 }).start();
 
@@ -86,7 +97,7 @@ public class CocktailRepository {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<Cocktail> cocktails = CocktailDbDao.getCocktailsbyName(name);
+                ArrayList<Cocktail> cocktails = CocktailDbDao.getCocktailsByName(name);
                 liveCocktails.postValue(cocktails);
             }
         }).start();
@@ -109,6 +120,30 @@ public class CocktailRepository {
         return liveCocktails;
     }
 
+    public MutableLiveData<ArrayList<Cocktail>> getCocktailsByNoAlcohol() {
+        final MutableLiveData<ArrayList<Cocktail>> liveCocktails = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Cocktail> cocktails = new ArrayList<>();
+                liveCocktails.postValue(cocktails);
+                ArrayList<String> cocktailIds = CocktailDbDao.getCocktailsbyNoAlcohol();
+                for (int i = 0; i < cocktailIds.size(); i++) {
+                    cocktails.add(CocktailDbDao.getCocktailById(cocktailIds.get(i)));
+                }
+            }
+        }).start();
+        return liveCocktails;
+    }
+
+    public void updateFavoriteIds(final ArrayList<String> ids) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabaseDao.updateFavoriteCocktailIds(ids);
+            }
+        }).start();
+    }
 
 
 }
