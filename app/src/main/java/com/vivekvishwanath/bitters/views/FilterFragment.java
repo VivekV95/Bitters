@@ -95,7 +95,7 @@ public class FilterFragment extends Fragment {
                     public void onChanged(@Nullable Cocktail cocktail) {
                         ArrayList<Cocktail> cocktails = new ArrayList<>();
                         cocktails.add(cocktail);
-                        listAdapter = new CocktailListAdapter(cocktails);
+                        listAdapter = new CocktailListAdapter(cocktails, viewModel);
                         recyclerView.setAdapter(listAdapter);
                     }
                 });
@@ -105,7 +105,7 @@ public class FilterFragment extends Fragment {
                         , new Observer<ArrayList<Cocktail>>() {
                     @Override
                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                        listAdapter = new CocktailListAdapter(cocktails);
+                        listAdapter = new CocktailListAdapter(cocktails, viewModel);
                         recyclerView.setAdapter(listAdapter);
                     }
                 });
@@ -136,7 +136,7 @@ public class FilterFragment extends Fragment {
                 viewModel.getCocktailsByName(s.toString()).observe(getActivity(), new Observer<ArrayList<Cocktail>>() {
                     @Override
                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                        listAdapter = new CocktailListAdapter(cocktails);
+                        listAdapter = new CocktailListAdapter(cocktails, viewModel);
                         recyclerView.setAdapter(listAdapter);
                     }
                 });
@@ -145,7 +145,7 @@ public class FilterFragment extends Fragment {
                 viewModel.getCocktailsByIngredients(s.toString()).observe(getActivity(), new Observer<ArrayList<Cocktail>>() {
                     @Override
                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                        listAdapter = new CocktailListAdapter(cocktails);
+                        listAdapter = new CocktailListAdapter(cocktails, viewModel);
                         recyclerView.setAdapter(listAdapter);
                     }
                 });

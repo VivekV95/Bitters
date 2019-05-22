@@ -32,6 +32,10 @@ public class CocktailViewModel extends ViewModel {
         cocktailsByNoAlcohol = new MutableLiveData<>();
     }
 
+    public MutableLiveData<ArrayList<String>> getFavoriteIds() {
+        return favoriteIds;
+    }
+
     public MutableLiveData<ArrayList<Cocktail>> getPopularCocktails() {
         return popularCocktails;
     }
@@ -66,6 +70,10 @@ public class CocktailViewModel extends ViewModel {
 
     public void updateFavoriteIds(ArrayList<String> ids) {
         repository.updateFavoriteIds(ids);
+    }
+
+    public void deleteFavoriteId(String id) {
+        repository.deleteFavoriteId(id);
     }
 
 }

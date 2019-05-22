@@ -145,5 +145,14 @@ public class CocktailRepository {
         }).start();
     }
 
+    public void deleteFavoriteId(final String id) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseDatabaseDao.deleteFavoriteCocktail(id);
+            }
+        }).start();
+    }
+
 
 }

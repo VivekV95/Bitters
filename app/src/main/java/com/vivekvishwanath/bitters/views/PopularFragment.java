@@ -53,7 +53,7 @@ public class PopularFragment extends Fragment {
         viewModel.getPopularCocktails().observe(this, new Observer<ArrayList<Cocktail>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                listAdapter = new CocktailListAdapter(cocktails);
+                listAdapter = new CocktailListAdapter(cocktails,viewModel);
                 recyclerView.setAdapter(listAdapter);
             }
         });
