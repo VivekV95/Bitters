@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".views.MainActivity"
             android:label="@string/title_activity_main"
             ></activity>

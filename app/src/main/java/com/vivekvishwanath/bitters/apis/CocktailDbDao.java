@@ -28,6 +28,7 @@ public class CocktailDbDao {
     private static final String INGREDIENT_IMAGE_BASE_URL =
             "https://www.thecocktaildb.com/images/ingredients/";
     private static final String INGREDIENT_IMAGE_MEDIUM_ENDING = "-Medium.png";
+    private static final String INGREDIENT_IMAGE_SMALL_ENDING = "-Small.png";
     private static final String DRINKS_MEMBER_NAME = "drinks";
 
     public static void initializeInstance() {
@@ -160,6 +161,27 @@ public class CocktailDbDao {
         return null;
     }
 
+    public static ArrayList<Ingredient> getAllIngredients() {
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        if (retrofit != null && gson != null && cocktailDbInterface != null) {
+            Call<JsonElement> call = cocktailDbInterface.getAllIngredients();
+            try {
+                JsonElement jsonElement = call.execute().body();
+                JsonArray jsonArray = jsonElement.getAsJsonObject()
+                        .getAsJsonArray(DRINKS_MEMBER_NAME);
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    Ingredient ingredient = new Ingredient();
+                    ingredient.setName(jsonArray.get(i).getAsJsonObject().get("strIngredient1").getAsString());
+                    ingredient.setPhotoUrl(ingredient.getName());
+                    ingredients.add(ingredient);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ingredients;
+    }
+
 
     private static Cocktail getSingleCocktailFromJson(JsonElement jsonElement) {
         Cocktail cocktail = gson.fromJson(jsonElement
@@ -192,4 +214,9 @@ public class CocktailDbDao {
         String url = INGREDIENT_IMAGE_BASE_URL + ingredientName + INGREDIENT_IMAGE_MEDIUM_ENDING;
         return url;
     }
+    public static String getIngredientSmallUrl(String ingredientName) {
+        String url = INGREDIENT_IMAGE_BASE_URL + ingredientName + INGREDIENT_IMAGE_SMALL_ENDING;
+        return url;
+    }
+
 }

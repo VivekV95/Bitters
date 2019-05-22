@@ -1,6 +1,5 @@
 package com.vivekvishwanath.bitters.adapters;
 
-import android.app.Activity;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
@@ -14,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -77,12 +75,12 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
                     ArrayList<String> newIds = viewModel.getFavoriteIds().getValue();
                     newIds.remove(cocktail.getDrinkId());
                     viewModel.updateFavoriteIds(newIds);
-                    notifyItemChanged(position);
+                    holder.star.setImageResource(R.drawable.ic_empty_star);
                 } else {
                     ArrayList<String> newIds = viewModel.getFavoriteIds().getValue();
                     newIds.add(cocktail.getDrinkId());
                     viewModel.updateFavoriteIds(newIds);
-                    notifyItemChanged(position);
+                    holder.star.setImageResource(R.drawable.ic_filled_star);
                 }
                 return true;
             }

@@ -72,6 +72,7 @@ public class FilterFragment extends Fragment {
         filterChoices.add(getString(R.string.filter_random_title));
         filterChoices.add(getString(R.string.filter_glass_title));
         filterChoices.add(getString(R.string.filter_alcoholic_title));
+        filterChoices.add(getString(R.string.filter_favorites_title));
 
         ArrayAdapter<String> choicesAdapter =
                 new ArrayAdapter<>(view.getContext(), R.layout.support_simple_spinner_dropdown_item
@@ -109,6 +110,16 @@ public class FilterFragment extends Fragment {
                         recyclerView.setAdapter(listAdapter);
                     }
                 });
+            }
+            if (spinner.getSelectedItem().equals(getString(R.string.filter_favorites_title))) {
+                viewModel.getFavoriteCocktails().observe(getActivity()
+                        , new Observer<ArrayList<Cocktail>>() {
+                            @Override
+                            public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
+                                listAdapter = new CocktailListAdapter(cocktails, viewModel);
+                                recyclerView.setAdapter(listAdapter);
+                            }
+                        });
             }
         }
 

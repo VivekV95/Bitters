@@ -36,6 +36,9 @@ public class FirebaseDatabaseDao {
                         GenericTypeIndicator<ArrayList<String>> ids
                                 = new GenericTypeIndicator<ArrayList<String>>() {};
                         ArrayList<String> cocktailIds = dataSnapshot.getValue(ids);
+                        if (cocktailIds == null) {
+                            cocktailIds = new ArrayList<>();
+                        }
                         callback.onIdsObtained(cocktailIds);
                     }
 

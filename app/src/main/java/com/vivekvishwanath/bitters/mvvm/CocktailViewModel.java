@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.models.Cocktail;
+import com.vivekvishwanath.bitters.models.Ingredient;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class CocktailViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Cocktail>> cocktailsByIngredients;
     private MutableLiveData<ArrayList<Cocktail>> cocktailsByNoAlcohol;
     private MutableLiveData<ArrayList<String>> favoriteIds;
+    private MutableLiveData<ArrayList<Ingredient>> allIngredients;
     private CocktailRepository repository;
 
     public void loadData(Context context, FirebaseUser user) {
@@ -27,13 +29,18 @@ public class CocktailViewModel extends ViewModel {
         favoriteCocktails = repository.getFavoriteCocktails();
         randomCocktail = repository.getRandomCocktail();
         customCocktails = repository.getCustomCocktails();
+        cocktailsByNoAlcohol = repository.getCocktailsByNoAlcohol();
+        allIngredients = repository.getAllIngredients();
         cocktailsByName = new MutableLiveData<>();
         cocktailsByIngredients = new MutableLiveData<>();
-        cocktailsByNoAlcohol = new MutableLiveData<>();
     }
 
     public MutableLiveData<ArrayList<String>> getFavoriteIds() {
         return favoriteIds;
+    }
+
+    public MutableLiveData<ArrayList<Ingredient>> getAllIngredients() {
+        return allIngredients;
     }
 
     public MutableLiveData<ArrayList<Cocktail>> getPopularCocktails() {
@@ -64,7 +71,6 @@ public class CocktailViewModel extends ViewModel {
     }
 
     public MutableLiveData<ArrayList<Cocktail>> getCocktailsByNoAlcohol() {
-        cocktailsByNoAlcohol = repository.getCocktailsByNoAlcohol();
         return cocktailsByNoAlcohol;
     }
 

@@ -29,4 +29,6 @@ public interface CocktailDbInterface {
     @GET("random.php")
     Call<JsonElement> getRandomCocktail();
 
+    @GET("list.php?i=list")
+    Call<JsonElement> getAllIngredients();
 }

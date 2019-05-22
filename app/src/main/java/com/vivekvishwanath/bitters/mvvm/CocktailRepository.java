@@ -1,11 +1,13 @@
 package com.vivekvishwanath.bitters.mvvm;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseDatabaseDao;
 import com.vivekvishwanath.bitters.models.Cocktail;
+import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.sqlite.BittersSqlDbDao;
 
 import java.util.ArrayList;
@@ -50,7 +52,12 @@ public class CocktailRepository {
         FirebaseDatabaseDao.getFavoriteCocktailIds(new FirebaseDatabaseDao.FavoriteIdsCallback() {
             @Override
             public void onIdsObtained(ArrayList<String> ids) {
-                idsLiveData.postValue(ids);
+                if (ids == null) {
+                    ArrayList<String> idList = new ArrayList<>();
+                    idsLiveData.postValue(idList);
+                } else {
+                    idsLiveData.postValue(ids);
+                }
             }
         });
         return idsLiveData;
@@ -68,10 +75,10 @@ public class CocktailRepository {
                     public void run() {
                         ArrayList<Cocktail> favoriteCocktails = new ArrayList<>();
                         cocktailsLiveData.postValue(favoriteCocktails);
-                        for (int i = 0; i < ids.size(); i++ ) {
-                            Cocktail cocktail = CocktailDbDao.getCocktailById(ids.get(i));
-                            favoriteCocktails.add(cocktail);
-                        }
+                            for (int i = 0; i < ids.size(); i++) {
+                                Cocktail cocktail = CocktailDbDao.getCocktailById(ids.get(i));
+                                favoriteCocktails.add(cocktail);
+                            }
                     }
                 }).start();
 
@@ -154,5 +161,17 @@ public class CocktailRepository {
         }).start();
     }
 
+    public MutableLiveData<ArrayList<Ingredient>> getAllIngredients() {
+        final MutableLiveData<ArrayList<Ingredient>> ingredients = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Ingredient> ingredientList = new ArrayList<>();
+                ingredients.postValue(ingredientList);
+                ingredientList = CocktailDbDao.getAllIngredients();
+            }
+        }).start();
+        return ingredients;
+    }
 
 }

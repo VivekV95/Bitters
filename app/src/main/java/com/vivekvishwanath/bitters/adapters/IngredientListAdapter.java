@@ -23,6 +23,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     public IngredientListAdapter(ArrayList<Ingredient> ingredientList) {
         this.ingredientList = ingredientList;
     }
+
     @NonNull
     @Override
     public IngredientListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {

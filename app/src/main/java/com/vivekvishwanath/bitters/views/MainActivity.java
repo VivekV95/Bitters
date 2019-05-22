@@ -22,6 +22,7 @@ import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
 import com.vivekvishwanath.bitters.apis.FirebaseDatabaseDao;
 import com.vivekvishwanath.bitters.models.Cocktail;
+import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.models.User;
 import com.vivekvishwanath.bitters.mvvm.CocktailRepository;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
@@ -84,7 +85,12 @@ public class MainActivity extends AppCompatActivity {
         viewModel.loadData(this, firebaseUser);
 
         fragmentManager = getSupportFragmentManager();
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Ingredient> ingredients = CocktailDbDao.getAllIngredients();
+            }
+        }).start();
     }
 
     @Override
