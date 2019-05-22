@@ -141,8 +141,8 @@ public class CocktailUtils {
     }
 
     public static ArrayList<String> getInstructionList(Cocktail cocktail) {
-        String[] instructionArray = cocktail.getInstructions().split(".");
-        ArrayList<String> instructionList = new ArrayList<>(Arrays.asList(instructionArray));
-        return instructionList; 
+        String[] instructionArray = cocktail.getInstructions().split("\\.");
+        ArrayList<String> instructionsList = new ArrayList<>(Arrays.asList(instructionArray));
+        return instructionsList;
     }
 }

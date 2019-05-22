@@ -42,13 +42,12 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
         holder.cocktailName.setText(cocktail.getDrinkName());
         Picasso.get().load(cocktail.getPhotoUrl()).into(holder.cocktailImage);
 
-        holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.cocktailParent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
                 DialogFragment dialogFragment = ViewCocktailFragment.newInstance(cocktailList.get(position));
                 dialogFragment.show(fragmentManager, "cocktail");
-                return true;
             }
         });
     }

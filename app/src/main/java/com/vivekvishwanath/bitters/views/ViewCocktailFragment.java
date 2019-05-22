@@ -2,6 +2,8 @@ package com.vivekvishwanath.bitters.views;
 
 
 import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,13 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.Utils.CocktailUtils;
-import com.vivekvishwanath.bitters.adapters.CocktailListAdapter;
 import com.vivekvishwanath.bitters.adapters.IngredientListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
@@ -30,11 +31,15 @@ public class ViewCocktailFragment extends DialogFragment {
     private Cocktail cocktail;
     private TextView cocktailName;
     private ImageView cocktailImage;
+    private LinearLayout instructionsLayout;
     ArrayList<Ingredient> ingredientList;
+    ArrayList<String> instructionsList;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private IngredientListAdapter listAdapter;
+
+    private Context context;
 
     public ViewCocktailFragment() {
         // Required empty public constructor
@@ -65,9 +70,14 @@ public class ViewCocktailFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        context = view.getContext();
+
         cocktailName = view.findViewById(R.id.view_cocktail_name);
+        cocktailName.setText(cocktail.getDrinkName());
+
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
         Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage);
+
         ingredientList = CocktailUtils.convertCocktailIngredients(cocktail);
 
         recyclerView = view.findViewById(R.id.recycler_view_ingredients);
@@ -77,5 +87,20 @@ public class ViewCocktailFragment extends DialogFragment {
 
         listAdapter = new IngredientListAdapter(ingredientList);
         recyclerView.setAdapter(listAdapter);
+
+        instructionsLayout = view.findViewById(R.id.instructions_layout);
+        instructionsList = CocktailUtils.getInstructionList(cocktail);
+        addInstructions();
+    }
+
+    private void addInstructions() {
+        for (int i = 0; i < instructionsList.size(); i++) {
+            TextView textView = new TextView(context);
+            textView.setText(instructionsList.get(i));
+            textView.setTextSize(16);
+            textView.setPadding(5,5,5,5);
+            textView.setTypeface(Typeface.DEFAULT_BOLD);
+            instructionsLayout.addView(textView);
+         }
     }
 }
