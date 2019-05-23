@@ -125,6 +125,7 @@ public class CustomCocktailFragment extends Fragment {
                 Ingredients ingredients = CocktailUtils.createIngredientsObject(selectedIngredients);
                 cocktail.setIngredients(ingredients);
                 cocktail.getIngredients().setIngredientsId(Integer.parseInt(cocktail.getDrinkId()));
+                cocktail.setInstructions(instructionsText.getText().toString());
                 viewModel.addCustomCocktail(cocktail);
             }
         }

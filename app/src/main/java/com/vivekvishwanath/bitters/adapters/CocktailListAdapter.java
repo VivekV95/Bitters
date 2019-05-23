@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -103,7 +104,7 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
             cocktailName = view.findViewById(R.id.cocktail_card_name);
             cocktailImage = view.findViewById(R.id.cocktail_card_image);
             cocktailParent = view.findViewById(R.id.cocktail_card_parent);
-            star = view.findViewById(R.id.cocktail_card_star);
+            star = view.findViewById(R.id.cocktail_card_star);;
         }
     }
 }

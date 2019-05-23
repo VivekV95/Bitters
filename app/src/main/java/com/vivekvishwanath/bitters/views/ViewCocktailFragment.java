@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class ViewCocktailFragment extends DialogFragment {
     private ImageView cocktailImage;
     private LinearLayout instructionsLayout;
     private ConstraintLayout viewCocktailParent;
+    private CheckBox alcoholicCheckbox;
     ArrayList<Ingredient> ingredientList;
     ArrayList<String> instructionsList;
 
@@ -84,6 +86,10 @@ public class ViewCocktailFragment extends DialogFragment {
         cocktailName = view.findViewById(R.id.view_cocktail_name);
         cocktailName.setText(cocktail.getDrinkName());
 
+        alcoholicCheckbox = view.findViewById(R.id.view_cocktail_checkbox_alcoholic);
+        if (cocktail.getIsAlcoholic() != null && cocktail.getIsAlcoholic().equals("Alcoholic")) {
+            alcoholicCheckbox.setChecked(true);
+        }
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
         Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage);
 
