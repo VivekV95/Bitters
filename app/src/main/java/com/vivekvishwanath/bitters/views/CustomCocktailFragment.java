@@ -143,12 +143,14 @@ public class CustomCocktailFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (checkFields()) {
+                cocktail_id = createId();
                 Cocktail cocktail = new Cocktail(Integer.toString(cocktail_id));
                 cocktail.setDrinkName(customCocktailName.getText().toString());
                 Ingredients ingredients = CocktailUtils.createIngredientsObject(viewModel.getSelectedIngredients().getValue());
                 cocktail.setIngredients(ingredients);
                 cocktail.getIngredients().setIngredientsId(Integer.parseInt(cocktail.getDrinkId()));
                 cocktail.setInstructions(instructionsText.getText().toString());
+                cocktail.setPhotoUrl(storeImage(viewModel.getCocktailImage().getValue(), cocktail_id));
                 viewModel.addCustomCocktail(cocktail);
             }
         }
@@ -171,7 +173,10 @@ public class CustomCocktailFragment extends Fragment {
             return false;
         } else if (TextUtils.isEmpty(instructionsText.getText().toString())) {
             return false;
-        } else if (selectedIngredients.size() < 2) {
+        } else if (viewModel.getSelectedIngredients().getValue().size() < 2
+                || viewModel.getSelectedIngredients().getValue().size() > 15) {
+            return false;
+        } else if (cocktailImage.getDrawable() == null) {
             return false;
         }
         return true;

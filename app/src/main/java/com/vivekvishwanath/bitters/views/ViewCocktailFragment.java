@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +31,9 @@ import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ViewCocktailFragment extends DialogFragment {
@@ -78,7 +83,7 @@ public class ViewCocktailFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        context = view.getContext();
+        context = getActivity();
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
 
         viewCocktailParent = view.findViewById(R.id.view_cocktail_layout);
@@ -92,6 +97,18 @@ public class ViewCocktailFragment extends DialogFragment {
         }
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
         Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage);
+        File directory = new File(context.getFilesDir(), "imageDir");
+        if (directory.exists()) {
+            File f = new File(directory, Integer.parseInt(cocktail.getDrinkId()) + ".png");
+            if (f.exists()) {
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+                    cocktailImage.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         ingredientList = CocktailUtils.convertCocktailIngredients(cocktail);
 

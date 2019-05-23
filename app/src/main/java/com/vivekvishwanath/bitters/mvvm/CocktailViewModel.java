@@ -59,6 +59,7 @@ public class CocktailViewModel extends ViewModel {
     }
 
     public MutableLiveData<ArrayList<Cocktail>> getCustomCocktails() {
+        customCocktails = repository.getCustomCocktails();
         return customCocktails;
     }
 
@@ -107,6 +108,10 @@ public class CocktailViewModel extends ViewModel {
 
     public MutableLiveData<Bitmap> getCocktailImage() {
         return cocktailImage;
+    }
+
+    public void deleteCustomCocktail(Cocktail cocktail) {
+        repository.deleteCustomCocktail(cocktail);
     }
 
 }

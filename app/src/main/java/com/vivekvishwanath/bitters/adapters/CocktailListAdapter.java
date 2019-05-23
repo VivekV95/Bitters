@@ -3,6 +3,8 @@ package com.vivekvishwanath.bitters.adapters;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -22,6 +24,9 @@ import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 import com.vivekvishwanath.bitters.views.ViewCocktailFragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapter.ViewHolder> {
@@ -49,7 +54,6 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
     public void onBindViewHolder(@NonNull final CocktailListAdapter.ViewHolder holder, final int position) {
         final Cocktail cocktail = cocktailList.get(position);
         holder.cocktailName.setText(cocktail.getDrinkName());
-        Picasso.get().load(cocktail.getPhotoUrl()).into(holder.cocktailImage);
         viewModel.getFavoriteIds().observe((LifecycleOwner)context
                 , new Observer<ArrayList<String>>() {
             @Override
@@ -71,7 +75,30 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
             }
         });
 
+        if (!canFavorite) {
+            File directory = new File(context.getFilesDir(), "imageDir");
+            if (directory.exists()) {
+                File f = new File(directory, Integer.parseInt(cocktail.getDrinkId()) + ".png");
+                if (f.exists()) {
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+                        holder.cocktailImage.setImageBitmap(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    viewModel.deleteCustomCocktail(cocktail);
+                    return false;
+                }
+            });
+        }
         if (canFavorite) {
+            Picasso.get().load(cocktail.getPhotoUrl()).into(holder.cocktailImage);
             holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

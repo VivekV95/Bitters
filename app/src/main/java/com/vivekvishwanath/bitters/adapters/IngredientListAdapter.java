@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +47,27 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     public void onBindViewHolder(@NonNull final IngredientListAdapter.ViewHolder parent, final int position) {
         final Ingredient ingredient = ingredientList.get(position);
         parent.ingredientName.setText(ingredient.getName());
-        parent.ingredientMeasurement.setText(ingredient.getMeasurement());
+         parent.ingredientMeasurement.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.getSelectedIngredients().getValue().get(position).setMeasurement(s.toString());
+            }
+        });
         Picasso.get().load(ingredient.getPhotoUrl()).into(parent.ingredientImage);
 
         if (isClickable) {
             parent.ingredientMeasurement.setFocusableInTouchMode(true);
             parent.ingredientMeasurement.setFocusable(true);
-            parent.ingredientMeasurement.setText(parent.ingredientMeasurement.getText().toString());
             parent.ingredientCardParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

@@ -194,4 +194,13 @@ public class CocktailRepository {
         return ids;
     }
 
+    public void deleteCustomCocktail(final Cocktail cocktail) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BittersSqlDbDao.deleteCocktail(cocktail);
+            }
+        }).start();
+    }
+
 }
