@@ -174,4 +174,25 @@ public class CocktailRepository {
         return ingredients;
     }
 
+    public void addCustomCocktail(final Cocktail cocktail) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BittersSqlDbDao.createCocktail(cocktail);
+            }
+        }).start();
+    }
+
+    public MutableLiveData<ArrayList<Integer>> getCustomIds() {
+        final MutableLiveData<ArrayList<Integer>> ids = new MutableLiveData<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Integer> idList = BittersSqlDbDao.readAllIds();
+                ids.postValue(idList);
+            }
+        }).start();
+        return ids;
+    }
+
 }

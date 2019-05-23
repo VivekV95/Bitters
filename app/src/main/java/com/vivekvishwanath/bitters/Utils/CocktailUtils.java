@@ -7,6 +7,8 @@ import com.vivekvishwanath.bitters.models.Ingredients;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CocktailUtils {
 
@@ -140,6 +142,73 @@ public class CocktailUtils {
         return ingredientList;
     }
 
+    public static Ingredients createIngredientsObject(ArrayList<Ingredient> ingredientList) {
+        Ingredients ingredients = new Ingredients();
+        for (int i = 0; i < ingredientList.size(); i++) {
+            if (i == 0) {
+                ingredients.setStrIngredient1(ingredientList.get(i).getName());
+                ingredients.setStrMeasure1(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 1) {
+                ingredients.setStrIngredient2(ingredientList.get(i).getName());
+                ingredients.setStrMeasure2(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 2) {
+                ingredients.setStrIngredient3(ingredientList.get(i).getName());
+                ingredients.setStrMeasure3(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 3) {
+                ingredients.setStrIngredient4(ingredientList.get(i).getName());
+                ingredients.setStrMeasure4(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 4) {
+                ingredients.setStrIngredient5(ingredientList.get(i).getName());
+                ingredients.setStrMeasure5(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 5) {
+                ingredients.setStrIngredient6(ingredientList.get(i).getName());
+                ingredients.setStrMeasure6(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 6) {
+                ingredients.setStrIngredient7(ingredientList.get(i).getName());
+                ingredients.setStrMeasure7(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 7) {
+                ingredients.setStrIngredient8(ingredientList.get(i).getName());
+                ingredients.setStrMeasure8(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 8) {
+                ingredients.setStrIngredient9(ingredientList.get(i).getName());
+                ingredients.setStrMeasure9(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 9) {
+                ingredients.setStrIngredient10(ingredientList.get(i).getName());
+                ingredients.setStrMeasure10(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 10) {
+                ingredients.setStrIngredient11(ingredientList.get(i).getName());
+                ingredients.setStrMeasure11(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 11) {
+                ingredients.setStrIngredient12(ingredientList.get(i).getName());
+                ingredients.setStrMeasure12(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 12) {
+                ingredients.setStrIngredient13(ingredientList.get(i).getName());
+                ingredients.setStrMeasure13(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 13) {
+                ingredients.setStrIngredient14(ingredientList.get(i).getName());
+                ingredients.setStrMeasure14(ingredientList.get(i).getMeasurement());
+            }
+            if (i == 14) {
+                ingredients.setStrIngredient15(ingredientList.get(i).getName());
+                ingredients.setStrMeasure15(ingredientList.get(i).getMeasurement());
+            }
+        }
+        return ingredients;
+    }
+
     public static ArrayList<String> getInstructionList(Cocktail cocktail) {
         ArrayList<String> instructionsList = new ArrayList<>();
         if (cocktail.getInstructions() != null) {
@@ -153,5 +222,16 @@ public class CocktailUtils {
         if(str != null && !str.isEmpty())
             return false;
         return true;
+    }
+
+    public static ArrayList<Ingredient> sortIngredients(ArrayList<Ingredient> ingredients) {
+        ArrayList<Ingredient> ingredientList = new ArrayList<>(ingredients);
+        Collections.sort(ingredientList, new Comparator<Ingredient>() {
+            @Override
+            public int compare(Ingredient o1, Ingredient o2) {
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+            }
+        });
+        return ingredientList;
     }
 }

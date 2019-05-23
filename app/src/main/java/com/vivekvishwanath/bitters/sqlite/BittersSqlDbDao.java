@@ -174,6 +174,24 @@ public class BittersSqlDbDao {
         }
     }
 
+    public static ArrayList<Integer> readAllIds() {
+        ArrayList<Integer> ids = new ArrayList<>();
+        if(db != null) {
+            String query = String.format("SELECT %s FROM %s"
+                    , BittersSqlDbContract.CocktailEntry._ID
+                    , BittersSqlDbContract.CocktailEntry.TABLE_NAME);
+            Cursor cursor = db.rawQuery(query, null);
+            int index;
+            while (cursor.moveToNext()) {
+                index = cursor.getColumnIndexOrThrow(BittersSqlDbContract.CocktailEntry._ID);
+                int id = cursor.getInt(index);
+                ids.add(id);
+            }
+            cursor.close();
+        }
+        return ids;
+    }
+
     public static ArrayList<Cocktail> readAllCocktails() {
         ArrayList<Cocktail> cocktails = new ArrayList<>();
         if (db != null) {
@@ -369,7 +387,7 @@ public class BittersSqlDbDao {
         ContentValues cocktailValues = new ContentValues();
 
         cocktailValues.put(BittersSqlDbContract.CocktailEntry._ID
-                , cocktail.getDrinkId());
+                , Integer.parseInt(cocktail.getDrinkId()));
         cocktailValues.put(BittersSqlDbContract.CocktailEntry.COLUMN_NAME_DRINK_NAME
                 , cocktail.getDrinkName());
         cocktailValues.put(BittersSqlDbContract.CocktailEntry.COLUMN_NAME_TAGS

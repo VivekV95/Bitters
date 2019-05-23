@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonPrimitive;
+import com.vivekvishwanath.bitters.Utils.CocktailUtils;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.models.Ingredients;
@@ -174,6 +175,7 @@ public class CocktailDbDao {
                     ingredient.setPhotoUrl(getIngredientSmallUrl(ingredient.getName()));
                     ingredients.add(ingredient);
                 }
+                return CocktailUtils.sortIngredients(ingredients);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -213,9 +215,12 @@ public class CocktailDbDao {
         String url = INGREDIENT_IMAGE_BASE_URL + ingredientName + INGREDIENT_IMAGE_MEDIUM_ENDING;
         return url;
     }
+
     public static String getIngredientSmallUrl(String ingredientName) {
         String url = INGREDIENT_IMAGE_BASE_URL + ingredientName + INGREDIENT_IMAGE_SMALL_ENDING;
         return url;
     }
+
+
 
 }

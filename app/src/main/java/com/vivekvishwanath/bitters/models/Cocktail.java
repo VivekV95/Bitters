@@ -1,5 +1,7 @@
 package com.vivekvishwanath.bitters.models;
 
+import android.content.Intent;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -51,6 +53,12 @@ public class Cocktail implements Serializable {
 
     public Cocktail() {
         ingredients = new Ingredients();
+    }
+
+    public Cocktail(String id) {
+        this.drinkId = id;
+        ingredients = new Ingredients();
+        ingredients.setIngredientsId(Integer.parseInt(id));
     }
 
     public String getDrinkId() {

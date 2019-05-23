@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         CustomCocktailFragment fragment = new CustomCocktailFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
+                                .addToBackStack(null)
                                 .commit();
                     }
                     item.setChecked(!item.isChecked());
@@ -97,6 +98,16 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Ingredient> ingredients = CocktailDbDao.getAllIngredients();
             }
         }).start();
+
+        /* Cocktail cocktail = new Cocktail("12345");
+        cocktail.setDrinkName("Best Cocktail Ever");
+        cocktail.getIngredients().setStrIngredient1("Alcohol");
+        cocktail.getIngredients().setStrMeasure1("A lot");
+        cocktail.getIngredients().setStrIngredient2("Milk");
+        cocktail.getIngredients().setStrMeasure2("Not too much");
+        cocktail.setInstructions("Whatever you want");
+
+        viewModel.addCustomCocktail(cocktail); */
     }
 
     @Override

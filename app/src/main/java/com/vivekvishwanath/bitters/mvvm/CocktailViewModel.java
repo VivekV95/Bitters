@@ -19,12 +19,14 @@ public class CocktailViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Cocktail>> cocktailsByIngredients;
     private MutableLiveData<ArrayList<Cocktail>> cocktailsByNoAlcohol;
     private MutableLiveData<ArrayList<String>> favoriteIds;
+    private MutableLiveData<ArrayList<Integer>> customIds;
     private MutableLiveData<ArrayList<Ingredient>> allIngredients;
     private CocktailRepository repository;
 
     public void loadData(Context context, FirebaseUser user) {
         repository = new CocktailRepository(context, user);
         favoriteIds = repository.getFavoriteIds();
+        customIds = repository.getCustomIds();
         popularCocktails = repository.getPopularCocktails();
         favoriteCocktails = repository.getFavoriteCocktails();
         randomCocktail = repository.getRandomCocktail();
@@ -80,6 +82,14 @@ public class CocktailViewModel extends ViewModel {
 
     public void deleteFavoriteId(String id) {
         repository.deleteFavoriteId(id);
+    }
+
+    public void addCustomCocktail(Cocktail cocktail) {
+        repository.addCustomCocktail(cocktail);
+    }
+
+    public MutableLiveData<ArrayList<Integer>> getCustomIds() {
+        return customIds;
     }
 
 }
