@@ -92,8 +92,8 @@ public class ViewCocktailFragment extends DialogFragment {
         cocktailName.setText(cocktail.getDrinkName());
 
         alcoholicCheckbox = view.findViewById(R.id.view_cocktail_checkbox_alcoholic);
-        if (cocktail.getIsAlcoholic() != null && cocktail.getIsAlcoholic().equals("Alcoholic")) {
-            alcoholicCheckbox.setChecked(true);
+        if (cocktail.getIsAlcoholic() != null && cocktail.getIsAlcoholic().equals("Non_Alcoholic")) {
+            alcoholicCheckbox.setChecked(false);
         }
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
         Picasso.get().load(cocktail.getPhotoUrl()).placeholder(R.drawable.ic_cocktail_icon_alt).into(cocktailImage);

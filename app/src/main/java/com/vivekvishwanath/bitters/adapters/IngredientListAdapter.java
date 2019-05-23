@@ -47,6 +47,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     public void onBindViewHolder(@NonNull final IngredientListAdapter.ViewHolder parent, final int position) {
         final Ingredient ingredient = ingredientList.get(position);
         parent.ingredientName.setText(ingredient.getName());
+        parent.ingredientMeasurement.setText(ingredient.getMeasurement());
          parent.ingredientMeasurement.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

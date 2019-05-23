@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.vivekvishwanath.bitters.R;
 
 
 public class GoogleAuthDao {
@@ -30,6 +31,7 @@ public class GoogleAuthDao {
 
     public GoogleAuthDao(Context context) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("383366225765-6ah1vg40prcfb8p4obf7eo7ttnsnuei3.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -41,7 +43,7 @@ public class GoogleAuthDao {
     public void signIn() {
         Toast.makeText(context, "In signIN method", Toast.LENGTH_SHORT);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        ((Activity)context).startActivityForResult(signInIntent, RC_SIGN_IN);
+        ((Activity) context).startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
 
@@ -73,7 +75,6 @@ public class GoogleAuthDao {
                     }
                 });
     }
-
 
 
 }
