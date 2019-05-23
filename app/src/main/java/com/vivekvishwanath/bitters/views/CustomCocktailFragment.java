@@ -13,7 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.adapters.IngredientListAdapter;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 public class CustomCocktailFragment extends Fragment {
 
     private EditText customCocktailName;
+    private CheckBox showIngredientsBox;
 
     private RecyclerView allIngredientsRecyclerView;
     private RecyclerView.LayoutManager allIngredientsLayoutManager;
@@ -56,6 +60,9 @@ public class CustomCocktailFragment extends Fragment {
         selectedIngredients = new ArrayList<>(15);
         context = getActivity();
 
+        showIngredientsBox = view.findViewById(R.id.show_ingredients_button);
+        showIngredientsBox.setOnCheckedChangeListener(showBoxListener);
+        
         allIngredientsRecyclerView = getView().findViewById(R.id.custom_cocktail_all_ingredients);
         allIngredientsRecyclerView.setHasFixedSize(true);
         allIngredientsLayoutManager = new GridLayoutManager(getContext(), 5);
@@ -78,4 +85,16 @@ public class CustomCocktailFragment extends Fragment {
             }
         });
     }
+
+    CompoundButton.OnCheckedChangeListener showBoxListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                allIngredientsRecyclerView.setVisibility(View.VISIBLE);
+            } else {
+                allIngredientsRecyclerView.setVisibility(View.GONE);
+            }
+        }
+    };
+
 }

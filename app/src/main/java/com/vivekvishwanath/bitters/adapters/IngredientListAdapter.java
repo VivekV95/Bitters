@@ -49,6 +49,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         Picasso.get().load(ingredient.getPhotoUrl()).into(parent.ingredientImage);
 
         if (isClickable) {
+            parent.ingredientMeasurement.setFocusableInTouchMode(true);
             parent.ingredientMeasurement.setFocusable(true);
             parent.ingredientCardParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -60,6 +61,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
                             return true;
                         }
                     }
+                    ingredient.setMeasurement(parent.ingredientMeasurement.getText().toString());
                     CustomCocktailFragment.selectedIngredients.add(ingredient);
                     CustomCocktailFragment.selectedIngredientsListAdapter.notifyDataSetChanged();
                     return true;

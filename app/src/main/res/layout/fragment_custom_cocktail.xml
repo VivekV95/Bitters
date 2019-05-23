@@ -45,18 +45,25 @@
 
             <TextView
                 android:id="@+id/textview_all_ingredients_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select up to 15 ingredients"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/custom_cocktail_selected_ingredients"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:gravity="center"
                 android:layout_margin="20dp"
                 />
-            
-            <Button
+
+            <CheckBox
+                android:id="@+id/show_ingredients_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Show"
+                app:layout_constraintLeft_toRightOf="@id/textview_all_ingredients_title"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textview_all_ingredients_title"
+                app:layout_constraintBottom_toBottomOf="@id/textview_all_ingredients_title"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/custom_cocktail_all_ingredients"
