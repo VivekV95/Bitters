@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
@@ -172,7 +171,7 @@ public class CocktailDbDao {
                 for (int i = 0; i < jsonArray.size(); i++) {
                     Ingredient ingredient = new Ingredient();
                     ingredient.setName(jsonArray.get(i).getAsJsonObject().get("strIngredient1").getAsString());
-                    ingredient.setPhotoUrl(ingredient.getName());
+                    ingredient.setPhotoUrl(getIngredientSmallUrl(ingredient.getName()));
                     ingredients.add(ingredient);
                 }
             } catch (IOException e) {

@@ -61,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
                     item.setChecked(!item.isChecked());
                 }
                 case R.id.navigation_create: {
+                    if (!item.isChecked()) {
+                        CustomCocktailFragment fragment = new CustomCocktailFragment();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.choice_fragment_container, fragment)
+                                .commit();
+                    }
                     item.setChecked(!item.isChecked());
                 }
                 case R.id.navigation_maps: {

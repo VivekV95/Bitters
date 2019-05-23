@@ -167,8 +167,8 @@ public class CocktailRepository {
             @Override
             public void run() {
                 ArrayList<Ingredient> ingredientList = new ArrayList<>();
-                ingredients.postValue(ingredientList);
                 ingredientList = CocktailDbDao.getAllIngredients();
+                ingredients.postValue(ingredientList);
             }
         }).start();
         return ingredients;

@@ -94,7 +94,7 @@ public class ViewCocktailFragment extends DialogFragment {
         layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
-        listAdapter = new IngredientListAdapter(ingredientList);
+        listAdapter = new IngredientListAdapter(ingredientList, context, viewModel, false);
         recyclerView.setAdapter(listAdapter);
 
         instructionsLayout = view.findViewById(R.id.instructions_layout);
