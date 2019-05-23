@@ -96,7 +96,7 @@ public class ViewCocktailFragment extends DialogFragment {
             alcoholicCheckbox.setChecked(true);
         }
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
-        Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage);
+        Picasso.get().load(cocktail.getPhotoUrl()).placeholder(R.drawable.ic_cocktail_icon_alt).into(cocktailImage);
         File directory = new File(context.getFilesDir(), "imageDir");
         if (directory.exists()) {
             File f = new File(directory, Integer.parseInt(cocktail.getDrinkId()) + ".png");

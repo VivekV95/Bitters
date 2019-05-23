@@ -93,12 +93,15 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
                 @Override
                 public boolean onLongClick(View v) {
                     viewModel.deleteCustomCocktail(cocktail);
+                    viewModel.getCustomCocktails();
+                    notifyDataSetChanged();
                     return false;
                 }
             });
         }
         if (canFavorite) {
-            Picasso.get().load(cocktail.getPhotoUrl()).into(holder.cocktailImage);
+            Picasso.get().load(cocktail.getPhotoUrl()).placeholder(R.drawable.ic_cocktail_icon_alt)
+                    .into(holder.cocktailImage);
             holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

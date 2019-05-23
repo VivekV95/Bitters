@@ -19,6 +19,6 @@
     <item
         android:id="@+id/navigation_maps"
         android:icon="@drawable/ic_search_maps_icon"
-        android:title="Find" />
+        android:title="View" />
 
 </menu>

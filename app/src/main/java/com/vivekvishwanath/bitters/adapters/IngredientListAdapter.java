@@ -63,7 +63,8 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
                 viewModel.getSelectedIngredients().getValue().get(position).setMeasurement(s.toString());
             }
         });
-        Picasso.get().load(ingredient.getPhotoUrl()).into(parent.ingredientImage);
+        Picasso.get().load(ingredient.getPhotoUrl()).placeholder(R.drawable.ic_cocktail_icon_alt)
+                .into(parent.ingredientImage);
 
         if (isClickable) {
             parent.ingredientMeasurement.setFocusableInTouchMode(true);
@@ -74,16 +75,13 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
                     for (Ingredient selectedIngredient : viewModel.getSelectedIngredients().getValue()) {
                         if (selectedIngredient.getName().equals(ingredient.getName())) {
                             viewModel.getSelectedIngredients().getValue().remove(selectedIngredient);
-                            parent.ingredientCardParent.setBackgroundResource(android.R.color.white);
                             CustomCocktailFragment.selectedIngredientsListAdapter.notifyDataSetChanged();
-                            notifyDataSetChanged();
                             return true;
                         }
                     }
                     ingredient.setMeasurement(parent.ingredientMeasurement.getText().toString());
                     viewModel.getSelectedIngredients().getValue().add(ingredient);
                     CustomCocktailFragment.selectedIngredientsListAdapter.notifyDataSetChanged();
-                    parent.ingredientCardParent.setBackgroundResource(R.color.colorAccent);
                     return true;
                 }
             });

@@ -10,13 +10,15 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.CocktailDbDao;
@@ -124,5 +126,28 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }
