@@ -34,6 +34,10 @@ import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.models.Ingredients;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
@@ -59,6 +63,7 @@ public class CustomCocktailFragment extends Fragment {
 
     public static final int IMAGE_REQUEST_CODE = 3;
     private int cocktail_id;
+
     public CustomCocktailFragment() {
         // Required empty public constructor
     }
@@ -77,7 +82,7 @@ public class CustomCocktailFragment extends Fragment {
         selectedIngredients = new ArrayList<>(15);
         context = getActivity();
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
-        if(viewModel.getSelectedIngredients().getValue() == null) {
+        if (viewModel.getSelectedIngredients().getValue() == null) {
             viewModel.getSelectedIngredients().setValue(selectedIngredients);
         }
 
@@ -117,7 +122,7 @@ public class CustomCocktailFragment extends Fragment {
         viewModel.getSelectedIngredients().observe(getActivity(), new Observer<ArrayList<Ingredient>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Ingredient> ingredients) {
-                selectedIngredientsListAdapter = new IngredientListAdapter(ingredients, context,viewModel, true);
+                selectedIngredientsListAdapter = new IngredientListAdapter(ingredients, context, viewModel, true);
                 selectedIngredientsRecyclerView.setAdapter(selectedIngredientsListAdapter);
             }
         });
@@ -181,18 +186,27 @@ public class CustomCocktailFragment extends Fragment {
         return num;
     }
 
-    /*
-
-     File directory = new File(context.getFilesDir(), "imageDir");
-            int id = data.getIntExtra("id", 0);
-            if (!directory.exists()) {
-                directory.mkdir();
-            }
-            if (id != 0) {
-                File myPath = new File(directory, id + "png");
-                int i = 0;
-            }
-     */
+    private String storeImage(Bitmap bitmap, int cocktailId) {
+        Bitmap image = bitmap;
+        File directory = new File(context.getFilesDir(), "imageDir");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File myPath = new File(directory, cocktailId + ".png");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPath);
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+            String uriPath = Uri.parse(myPath.getAbsolutePath()).toString();
+            return uriPath;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }
