@@ -43,7 +43,7 @@
                 app:layout_constraintTop_toBottomOf="@id/custom_cocktail_image"
                 android:gravity="center"
                 />
-            
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/custom_cocktail_selected_ingredients"
                 android:layout_width="match_parent"
@@ -83,7 +83,7 @@
 
                 android:layout_margin="20dp">
             </android.support.v7.widget.RecyclerView>
-            
+
             <EditText
                 android:id="@+id/custom_cocktail_instructions_text"
                 android:layout_width="match_parent"

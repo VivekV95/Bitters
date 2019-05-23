@@ -2,7 +2,6 @@ package com.vivekvishwanath.bitters.views;
 
 
 import android.app.Dialog;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,8 +20,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.Utils.CocktailUtils;
@@ -44,6 +45,7 @@ public class ViewCocktailFragment extends DialogFragment {
     private LinearLayout instructionsLayout;
     private ConstraintLayout viewCocktailParent;
     private CheckBox alcoholicCheckbox;
+    private ProgressBar progressBar;
     ArrayList<Ingredient> ingredientList;
     ArrayList<String> instructionsList;
 
@@ -91,12 +93,23 @@ public class ViewCocktailFragment extends DialogFragment {
         cocktailName = view.findViewById(R.id.view_cocktail_name);
         cocktailName.setText(cocktail.getDrinkName());
 
+        progressBar = view.findViewById(R.id.view_cocktail_progress_bar);
         alcoholicCheckbox = view.findViewById(R.id.view_cocktail_checkbox_alcoholic);
         if (cocktail.getIsAlcoholic() != null && cocktail.getIsAlcoholic().equals("Non_Alcoholic")) {
             alcoholicCheckbox.setChecked(false);
         }
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
-        Picasso.get().load(cocktail.getPhotoUrl()).placeholder(R.drawable.ic_cocktail_icon_alt).into(cocktailImage);
+        Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage, new Callback() {
+            @Override
+            public void onSuccess() {
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
         File directory = new File(context.getFilesDir(), "imageDir");
         if (directory.exists()) {
             File f = new File(directory, Integer.parseInt(cocktail.getDrinkId()) + ".png");
@@ -117,7 +130,7 @@ public class ViewCocktailFragment extends DialogFragment {
         layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
-        listAdapter = new IngredientListAdapter(ingredientList, context, viewModel, false);
+        listAdapter = new IngredientListAdapter(ingredientList, context, viewModel, false, false);
         recyclerView.setAdapter(listAdapter);
 
         instructionsLayout = view.findViewById(R.id.instructions_layout);

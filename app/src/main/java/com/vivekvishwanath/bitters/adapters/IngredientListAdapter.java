@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.models.Ingredient;
@@ -25,14 +27,18 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     private ArrayList<Ingredient> ingredientList;
     private Context context;
     private CocktailViewModel viewModel;
+    private ProgressBar progressBar;
     private boolean isClickable;
+    private boolean isEditable;
 
     public IngredientListAdapter(ArrayList<Ingredient> ingredientList
-            , Context context, CocktailViewModel viewModel, boolean isClickable) {
+            , Context context, CocktailViewModel viewModel, boolean isClickable
+            , boolean isEditable) {
         this.ingredientList = ingredientList;
         this.context = context;
         this.viewModel = viewModel;
         this.isClickable = isClickable;
+        this.isEditable = isEditable;
     }
 
     @NonNull
@@ -48,24 +54,37 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         final Ingredient ingredient = ingredientList.get(position);
         parent.ingredientName.setText(ingredient.getName());
         parent.ingredientMeasurement.setText(ingredient.getMeasurement());
-         parent.ingredientMeasurement.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        if (isEditable) {
+            parent.ingredientMeasurement.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                viewModel.getSelectedIngredients().getValue().get(position).setMeasurement(s.toString());
-            }
-        });
-        Picasso.get().load(ingredient.getPhotoUrl()).placeholder(R.drawable.ic_cocktail_icon_alt)
-                .into(parent.ingredientImage);
+                @Override
+                public void afterTextChanged(Editable s) {
+                    viewModel.getSelectedIngredients().getValue().get(position).setMeasurement(s.toString());
+                }
+            });
+        }
+        Picasso.get()
+                .load(ingredient.getPhotoUrl())
+                .into(parent.ingredientImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        parent.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        parent.progressBar.setVisibility(View.GONE);
+                    }
+                });
 
         if (isClickable) {
             parent.ingredientMeasurement.setFocusableInTouchMode(true);
@@ -99,6 +118,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         private ImageView ingredientImage;
         private EditText ingredientMeasurement;
         private CardView ingredientCardParent;
+        private ProgressBar progressBar;
 
         public ViewHolder(View view) {
             super(view);
@@ -106,6 +126,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
             ingredientImage = view.findViewById(R.id.ingredient_card_image);
             ingredientMeasurement = view.findViewById(R.id.ingredient_card_measurement);
             ingredientCardParent = view.findViewById(R.id.ingredient_card_parent);
+            progressBar = view.findViewById(R.id.ingredient_card_progress_bar);
         }
     }
 }

@@ -16,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.models.Cocktail;
@@ -92,6 +94,7 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
             holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    holder.cocktailParent.setBackgroundResource(android.R.color.holo_red_dark);
                     viewModel.deleteCustomCocktail(cocktail);
                     viewModel.getCustomCocktails();
                     notifyDataSetChanged();
@@ -100,8 +103,19 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
             });
         }
         if (canFavorite) {
-            Picasso.get().load(cocktail.getPhotoUrl()).placeholder(R.drawable.ic_cocktail_icon_alt)
-                    .into(holder.cocktailImage);
+            Picasso.get()
+                    .load(cocktail.getPhotoUrl())
+                    .into(holder.cocktailImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            holder.progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            holder.progressBar.setVisibility(View.GONE);
+                        }
+                    });
             holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -132,13 +146,15 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
         private ImageView cocktailImage;
         private CardView cocktailParent;
         private ImageView star;
+        private ProgressBar progressBar;
 
         public ViewHolder(View view) {
             super(view);
             cocktailName = view.findViewById(R.id.cocktail_card_name);
             cocktailImage = view.findViewById(R.id.cocktail_card_image);
             cocktailParent = view.findViewById(R.id.cocktail_card_parent);
-            star = view.findViewById(R.id.cocktail_card_star);;
+            star = view.findViewById(R.id.cocktail_card_star);
+            progressBar = view.findViewById(R.id.cocktail_card_progress_bar);
         }
     }
 }

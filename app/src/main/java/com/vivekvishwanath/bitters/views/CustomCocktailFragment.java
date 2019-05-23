@@ -114,7 +114,7 @@ public class CustomCocktailFragment extends Fragment {
         viewModel.getAllIngredients().observe(getActivity(), new Observer<ArrayList<Ingredient>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Ingredient> ingredients) {
-                allIngredientsListAdapter = new IngredientListAdapter(ingredients, context, viewModel, true);
+                allIngredientsListAdapter = new IngredientListAdapter(ingredients, context, viewModel, true, false);
                 allIngredientsRecyclerView.setAdapter(allIngredientsListAdapter);
             }
         });
@@ -122,7 +122,7 @@ public class CustomCocktailFragment extends Fragment {
         viewModel.getSelectedIngredients().observe(getActivity(), new Observer<ArrayList<Ingredient>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Ingredient> ingredients) {
-                selectedIngredientsListAdapter = new IngredientListAdapter(ingredients, context, viewModel, true);
+                selectedIngredientsListAdapter = new IngredientListAdapter(ingredients, context, viewModel, true, true);
                 selectedIngredientsRecyclerView.setAdapter(selectedIngredientsListAdapter);
             }
         });
