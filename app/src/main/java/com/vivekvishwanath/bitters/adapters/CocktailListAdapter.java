@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,10 +29,13 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
     private ArrayList<Cocktail> cocktailList;
     private Context context;
     private CocktailViewModel viewModel;
+    private boolean canFavorite;
 
-    public CocktailListAdapter(ArrayList<Cocktail> cocktailList, CocktailViewModel viewModel) {
+    public CocktailListAdapter(ArrayList<Cocktail> cocktailList, CocktailViewModel viewModel
+            ,boolean canFavorite) {
         this.cocktailList = cocktailList;
         this.viewModel = viewModel;
+        this.canFavorite = canFavorite;
     }
     @NonNull
     @Override
@@ -69,23 +71,25 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
             }
         });
 
-        holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (viewModel.getFavoriteIds().getValue().contains(cocktail.getDrinkId())) {
-                    ArrayList<String> newIds = viewModel.getFavoriteIds().getValue();
-                    newIds.remove(cocktail.getDrinkId());
-                    viewModel.updateFavoriteIds(newIds);
-                    holder.star.setImageResource(R.drawable.ic_empty_star);
-                } else {
-                    ArrayList<String> newIds = viewModel.getFavoriteIds().getValue();
-                    newIds.add(cocktail.getDrinkId());
-                    viewModel.updateFavoriteIds(newIds);
-                    holder.star.setImageResource(R.drawable.ic_filled_star);
+        if (canFavorite) {
+            holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (viewModel.getFavoriteIds().getValue().contains(cocktail.getDrinkId())) {
+                        ArrayList<String> newIds = viewModel.getFavoriteIds().getValue();
+                        newIds.remove(cocktail.getDrinkId());
+                        viewModel.updateFavoriteIds(newIds);
+                        holder.star.setImageResource(R.drawable.ic_empty_star);
+                    } else {
+                        ArrayList<String> newIds = viewModel.getFavoriteIds().getValue();
+                        newIds.add(cocktail.getDrinkId());
+                        viewModel.updateFavoriteIds(newIds);
+                        holder.star.setImageResource(R.drawable.ic_filled_star);
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
     }
 
     @Override

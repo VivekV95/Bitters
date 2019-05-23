@@ -1,6 +1,5 @@
 package com.vivekvishwanath.bitters.mvvm;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import com.google.firebase.auth.FirebaseUser;

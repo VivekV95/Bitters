@@ -56,7 +56,7 @@ public class ViewCustomFragment extends Fragment {
         viewModel.getCustomCocktails().observe(this, new Observer<ArrayList<Cocktail>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                listAdapter = new CocktailListAdapter(cocktails,viewModel);
+                listAdapter = new CocktailListAdapter(cocktails,viewModel, false);
                 recyclerView.setAdapter(listAdapter);
             }
         });

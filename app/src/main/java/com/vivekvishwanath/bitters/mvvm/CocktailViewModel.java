@@ -3,6 +3,7 @@ package com.vivekvishwanath.bitters.mvvm;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.models.Cocktail;
@@ -21,6 +22,8 @@ public class CocktailViewModel extends ViewModel {
     private MutableLiveData<ArrayList<String>> favoriteIds;
     private MutableLiveData<ArrayList<Integer>> customIds;
     private MutableLiveData<ArrayList<Ingredient>> allIngredients;
+    private MutableLiveData<ArrayList<Ingredient>> selectedIngredients;
+    private MutableLiveData<Bitmap> cocktailImage;
     private CocktailRepository repository;
 
     public void loadData(Context context, FirebaseUser user) {
@@ -33,8 +36,10 @@ public class CocktailViewModel extends ViewModel {
         customCocktails = repository.getCustomCocktails();
         cocktailsByNoAlcohol = repository.getCocktailsByNoAlcohol();
         allIngredients = repository.getAllIngredients();
+        selectedIngredients = new MutableLiveData<>();
         cocktailsByName = new MutableLiveData<>();
         cocktailsByIngredients = new MutableLiveData<>();
+        cocktailImage = new MutableLiveData<>();
     }
 
     public MutableLiveData<ArrayList<String>> getFavoriteIds() {
@@ -90,6 +95,18 @@ public class CocktailViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<Integer>> getCustomIds() {
         return customIds;
+    }
+
+    public MutableLiveData<ArrayList<Ingredient>> getSelectedIngredients() {
+        return selectedIngredients;
+    }
+
+    public void setCustomCocktailImage(Bitmap bitmap) {
+        cocktailImage.setValue(bitmap);
+    }
+
+    public MutableLiveData<Bitmap> getCocktailImage() {
+        return cocktailImage;
     }
 
 }

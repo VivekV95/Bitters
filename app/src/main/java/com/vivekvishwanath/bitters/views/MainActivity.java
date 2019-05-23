@@ -4,35 +4,37 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
+
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
-import com.vivekvishwanath.bitters.apis.FirebaseDatabaseDao;
-import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
-import com.vivekvishwanath.bitters.models.User;
-import com.vivekvishwanath.bitters.mvvm.CocktailRepository;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
     private FirebaseUser firebaseUser;
     public static CocktailViewModel viewModel;
+    private Context context;
 
     private FragmentManager fragmentManager;
 
@@ -89,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.setItemIconTintList(null);
         firebaseUser = FirebaseAuthDao.getCurrentUser();
+        context = this;
 
         viewModel = ViewModelProviders.of(this).get(CocktailViewModel.class);
         viewModel.loadData(this, firebaseUser);
@@ -123,5 +125,18 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.choice_fragment_container, fragment)
                 .commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && requestCode == CustomCocktailFragment.IMAGE_REQUEST_CODE) {
+            Uri imageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                viewModel.setCustomCocktailImage(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

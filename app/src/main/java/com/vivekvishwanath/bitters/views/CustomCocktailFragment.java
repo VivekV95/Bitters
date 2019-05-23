@@ -43,6 +43,7 @@ public class CustomCocktailFragment extends Fragment {
     private CheckBox showIngredientsBox;
     private EditText instructionsText;
     private Button saveButton;
+    private ImageView cocktailImage;
 
     private RecyclerView allIngredientsRecyclerView;
     private RecyclerView.LayoutManager allIngredientsLayoutManager;
@@ -56,6 +57,8 @@ public class CustomCocktailFragment extends Fragment {
     private Context context;
     public static ArrayList<Ingredient> selectedIngredients;
 
+    public static final int IMAGE_REQUEST_CODE = 3;
+    private int cocktail_id;
     public CustomCocktailFragment() {
         // Required empty public constructor
     }
@@ -74,11 +77,21 @@ public class CustomCocktailFragment extends Fragment {
         selectedIngredients = new ArrayList<>(15);
         context = getActivity();
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
+        if(viewModel.getSelectedIngredients().getValue() == null) {
+            viewModel.getSelectedIngredients().setValue(selectedIngredients);
+        }
 
         showIngredientsBox = view.findViewById(R.id.show_ingredients_button);
         showIngredientsBox.setOnCheckedChangeListener(showBoxListener);
 
         customCocktailName = view.findViewById(R.id.custom_cocktail_name);
+
+        cocktailImage = view.findViewById(R.id.custom_cocktail_image);
+        if (viewModel.getCocktailImage().getValue() != null) {
+            cocktailImage.setImageBitmap(viewModel.getCocktailImage().getValue());
+        }
+        cocktailImage.setOnClickListener(imageListener);
+
         instructionsText = view.findViewById(R.id.custom_cocktail_instructions_text);
         saveButton = view.findViewById(R.id.save_button);
         saveButton.setOnClickListener(saveButtonListener);
@@ -93,14 +106,19 @@ public class CustomCocktailFragment extends Fragment {
         selectedIngredientsLayoutManager = new GridLayoutManager(getContext(), 3);
         selectedIngredientsRecyclerView.setLayoutManager(selectedIngredientsLayoutManager);
 
-        selectedIngredientsListAdapter = new IngredientListAdapter(selectedIngredients, context, viewModel, true);
-        selectedIngredientsRecyclerView.setAdapter(selectedIngredientsListAdapter);
-
         viewModel.getAllIngredients().observe(getActivity(), new Observer<ArrayList<Ingredient>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Ingredient> ingredients) {
                 allIngredientsListAdapter = new IngredientListAdapter(ingredients, context, viewModel, true);
                 allIngredientsRecyclerView.setAdapter(allIngredientsListAdapter);
+            }
+        });
+
+        viewModel.getSelectedIngredients().observe(getActivity(), new Observer<ArrayList<Ingredient>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Ingredient> ingredients) {
+                selectedIngredientsListAdapter = new IngredientListAdapter(ingredients, context,viewModel, true);
+                selectedIngredientsRecyclerView.setAdapter(selectedIngredientsListAdapter);
             }
         });
     }
@@ -120,14 +138,26 @@ public class CustomCocktailFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (checkFields()) {
-                Cocktail cocktail = new Cocktail(Integer.toString(createId()));
+                Cocktail cocktail = new Cocktail(Integer.toString(cocktail_id));
                 cocktail.setDrinkName(customCocktailName.getText().toString());
-                Ingredients ingredients = CocktailUtils.createIngredientsObject(selectedIngredients);
+                Ingredients ingredients = CocktailUtils.createIngredientsObject(viewModel.getSelectedIngredients().getValue());
                 cocktail.setIngredients(ingredients);
                 cocktail.getIngredients().setIngredientsId(Integer.parseInt(cocktail.getDrinkId()));
                 cocktail.setInstructions(instructionsText.getText().toString());
                 viewModel.addCustomCocktail(cocktail);
             }
+        }
+    };
+
+    View.OnClickListener imageListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            cocktail_id = createId();
+            imageIntent.putExtra("id", cocktail_id);
+            imageIntent.setType("image/*");
+            getActivity().setResult(Activity.RESULT_OK, imageIntent);
+            getActivity().startActivityForResult(imageIntent, IMAGE_REQUEST_CODE);
         }
     };
 
@@ -150,6 +180,19 @@ public class CustomCocktailFragment extends Fragment {
         }
         return num;
     }
+
+    /*
+
+     File directory = new File(context.getFilesDir(), "imageDir");
+            int id = data.getIntExtra("id", 0);
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+            if (id != 0) {
+                File myPath = new File(directory, id + "png");
+                int i = 0;
+            }
+     */
 
 
 }

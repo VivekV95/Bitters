@@ -51,19 +51,23 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         if (isClickable) {
             parent.ingredientMeasurement.setFocusableInTouchMode(true);
             parent.ingredientMeasurement.setFocusable(true);
+            parent.ingredientMeasurement.setText(parent.ingredientMeasurement.getText().toString());
             parent.ingredientCardParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    for (Ingredient selectedIngredient : CustomCocktailFragment.selectedIngredients) {
+                    for (Ingredient selectedIngredient : viewModel.getSelectedIngredients().getValue()) {
                         if (selectedIngredient.getName().equals(ingredient.getName())) {
-                            CustomCocktailFragment.selectedIngredients.remove(selectedIngredient);
+                            viewModel.getSelectedIngredients().getValue().remove(selectedIngredient);
+                            parent.ingredientCardParent.setBackgroundResource(android.R.color.white);
                             CustomCocktailFragment.selectedIngredientsListAdapter.notifyDataSetChanged();
+                            notifyDataSetChanged();
                             return true;
                         }
                     }
                     ingredient.setMeasurement(parent.ingredientMeasurement.getText().toString());
-                    CustomCocktailFragment.selectedIngredients.add(ingredient);
+                    viewModel.getSelectedIngredients().getValue().add(ingredient);
                     CustomCocktailFragment.selectedIngredientsListAdapter.notifyDataSetChanged();
+                    parent.ingredientCardParent.setBackgroundResource(R.color.colorAccent);
                     return true;
                 }
             });
