@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -163,7 +164,9 @@ public class CustomCocktailFragment extends Fragment {
                 cocktail.setInstructions(instructionsText.getText().toString());
                 cocktail.setPhotoUrl(storeImage(viewModel.getCocktailImage().getValue(), cocktail_id));
                 viewModel.addCustomCocktail(cocktail);
+                Snackbar.make(getView(), "Cocktail Created!", Snackbar.LENGTH_LONG).show();
                 mediaPlayer.start();
+
             }
         }
     };

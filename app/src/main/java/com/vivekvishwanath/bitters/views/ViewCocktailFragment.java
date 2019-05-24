@@ -13,8 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -108,7 +106,7 @@ public class ViewCocktailFragment extends DialogFragment {
 
         progressBar = view.findViewById(R.id.view_cocktail_progress_bar);
         alcoholicCheckbox = view.findViewById(R.id.view_cocktail_checkbox_alcoholic);
-        if (cocktail.getIsAlcoholic() != null && cocktail.getIsAlcoholic().equals("Non_Alcoholic")) {
+        if (cocktail.getIsAlcoholic() != null && cocktail.getIsAlcoholic().toLowerCase().equals("non alcoholic")) {
             alcoholicCheckbox.setChecked(false);
         }
         cocktailImage = view.findViewById(R.id.view_cocktail_image);

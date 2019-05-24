@@ -70,7 +70,6 @@ public class FilterFragment extends Fragment {
         filterChoices.add(getString(R.string.filter_name_title));
         filterChoices.add(getString(R.string.filter_ingredients_title));
         filterChoices.add(getString(R.string.filter_random_title));
-        filterChoices.add(getString(R.string.filter_glass_title));
         filterChoices.add(getString(R.string.filter_alcoholic_title));
         filterChoices.add(getString(R.string.filter_favorites_title));
 
