@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
 
     private FragmentManager fragmentManager;
+    private int imageCode = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    BottomNavigationView navView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.app_bar_title);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.setItemIconTintList(null);
         firebaseUser = FirebaseAuthDao.getCurrentUser();
@@ -101,22 +104,25 @@ public class MainActivity extends AppCompatActivity {
         viewModel.loadData(this, firebaseUser);
 
         fragmentManager = getSupportFragmentManager();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<Ingredient> ingredients = CocktailDbDao.getAllIngredients();
-            }
-        }).start();
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        PopularFragment fragment = new PopularFragment();
-        fragmentManager.beginTransaction()
-                .replace(R.id.choice_fragment_container, fragment)
-                .commit();
+        if (imageCode != 0) {
+            CustomCocktailFragment f = new CustomCocktailFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.choice_fragment_container, f)
+                    .commit();
+            imageCode = 0;
+        } else {
+            PopularFragment fragment = new PopularFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.choice_fragment_container, fragment)
+                    .commit();
+        }
+
     }
 
     @Override
@@ -125,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
             Uri imageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                imageCode = requestCode;
                 viewModel.setCustomCocktailImage(bitmap);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -150,8 +158,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
 }
