@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -49,6 +50,8 @@ public class CustomCocktailFragment extends Fragment {
     private Button saveButton;
     private ImageView cocktailImage;
     private FloatingActionButton addImageButton;
+
+    MediaPlayer mediaPlayer;
 
     private RecyclerView allIngredientsRecyclerView;
     private RecyclerView.LayoutManager allIngredientsLayoutManager;
@@ -132,6 +135,8 @@ public class CustomCocktailFragment extends Fragment {
                 selectedIngredientsRecyclerView.setAdapter(selectedIngredientsListAdapter);
             }
         });
+
+        mediaPlayer = MediaPlayer.create(context, R.raw.shaker_sound);
     }
 
     CompoundButton.OnCheckedChangeListener showBoxListener = new CompoundButton.OnCheckedChangeListener() {
@@ -158,6 +163,7 @@ public class CustomCocktailFragment extends Fragment {
                 cocktail.setInstructions(instructionsText.getText().toString());
                 cocktail.setPhotoUrl(storeImage(viewModel.getCocktailImage().getValue(), cocktail_id));
                 viewModel.addCustomCocktail(cocktail);
+                mediaPlayer.start();
             }
         }
     };
