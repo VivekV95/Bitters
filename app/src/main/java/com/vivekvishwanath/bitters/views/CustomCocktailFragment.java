@@ -1,17 +1,18 @@
 package com.vivekvishwanath.bitters.views;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.Utils.CocktailUtils;
@@ -48,6 +48,7 @@ public class CustomCocktailFragment extends Fragment {
     private EditText instructionsText;
     private Button saveButton;
     private ImageView cocktailImage;
+    private FloatingActionButton addImageButton;
 
     private RecyclerView allIngredientsRecyclerView;
     private RecyclerView.LayoutManager allIngredientsLayoutManager;
@@ -76,6 +77,7 @@ public class CustomCocktailFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_custom_cocktail, container, false);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -91,11 +93,15 @@ public class CustomCocktailFragment extends Fragment {
 
         customCocktailName = view.findViewById(R.id.custom_cocktail_name);
 
+        addImageButton = view.findViewById(R.id.add_image_button);
+        addImageButton.setOnClickListener(imageListener);
+
         cocktailImage = view.findViewById(R.id.custom_cocktail_image);
+        cocktailImage.setOnClickListener(imageListener);
         if (viewModel.getCocktailImage().getValue() != null) {
             cocktailImage.setImageBitmap(viewModel.getCocktailImage().getValue());
+            addImageButton.setVisibility(View.INVISIBLE);
         }
-        cocktailImage.setOnClickListener(imageListener);
 
         instructionsText = view.findViewById(R.id.custom_cocktail_instructions_text);
         saveButton = view.findViewById(R.id.save_button);

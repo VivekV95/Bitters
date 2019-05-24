@@ -78,6 +78,7 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
         });
 
         if (!canFavorite) {
+            holder.progressBar.setVisibility(View.GONE);
             File directory = new File(context.getFilesDir(), "imageDir");
             if (directory.exists()) {
                 File f = new File(directory, Integer.parseInt(cocktail.getDrinkId()) + ".png");

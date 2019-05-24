@@ -1,11 +1,8 @@
 package com.vivekvishwanath.bitters.models;
 
-import android.content.Intent;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Cocktail implements Serializable {
 

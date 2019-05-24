@@ -27,7 +27,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     private ArrayList<Ingredient> ingredientList;
     private Context context;
     private CocktailViewModel viewModel;
-    private ProgressBar progressBar;
     private boolean isClickable;
     private boolean isEditable;
 
@@ -55,6 +54,8 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         parent.ingredientName.setText(ingredient.getName());
         parent.ingredientMeasurement.setText(ingredient.getMeasurement());
         if (isEditable) {
+            parent.ingredientMeasurement.setFocusableInTouchMode(true);
+            parent.ingredientMeasurement.setFocusable(true);
             parent.ingredientMeasurement.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -87,8 +88,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
                 });
 
         if (isClickable) {
-            parent.ingredientMeasurement.setFocusableInTouchMode(true);
-            parent.ingredientMeasurement.setFocusable(true);
             parent.ingredientCardParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
