@@ -100,8 +100,7 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
                     holder.cocktailParent.setBackgroundResource(android.R.color.holo_red_dark);
                     viewModel.deleteCustomCocktail(cocktail);
                     viewModel.getCustomCocktails();
-                    notifyDataSetChanged();
-                    return false;
+                    return true;
                 }
             });
         }

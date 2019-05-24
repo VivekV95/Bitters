@@ -85,7 +85,7 @@ public class CustomCocktailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        selectedIngredients = new ArrayList<>(15);
+        selectedIngredients = new ArrayList<>();
         context = getActivity();
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
         if (viewModel.getSelectedIngredients().getValue() == null) {

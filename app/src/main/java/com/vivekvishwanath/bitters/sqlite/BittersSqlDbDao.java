@@ -29,7 +29,7 @@ public class BittersSqlDbDao {
 
     public static Cocktail readCocktail(int id) {
         String entryQuery = String.format("SELECT * FROM %s " +
-                        "JOIN %s ON %s.%s = %s.%s " +
+                "JOIN %s ON %s.%s = %s.%s " +
                         "WHERE %s.%s = %s",
                 BittersSqlDbContract.CocktailEntry.TABLE_NAME
                 , BittersSqlDbContract.IngredientEntry.TABLE_NAME

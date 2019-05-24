@@ -114,4 +114,10 @@ public class CocktailViewModel extends ViewModel {
         repository.deleteCustomCocktail(cocktail);
     }
 
+    public void updateSelectedIngredientMeasurement(int position, String measurement) {
+        if (position < selectedIngredients.getValue().size()) {
+            selectedIngredients.getValue().get(position).setMeasurement(measurement);
+        }
+    }
+
 }

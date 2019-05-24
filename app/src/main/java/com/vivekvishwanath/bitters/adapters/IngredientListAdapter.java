@@ -56,7 +56,7 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
         if (isEditable) {
             parent.ingredientMeasurement.setFocusableInTouchMode(true);
             parent.ingredientMeasurement.setFocusable(true);
-            parent.ingredientMeasurement.addTextChangedListener(new TextWatcher() {
+             parent.ingredientMeasurement.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -69,7 +69,10 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    viewModel.getSelectedIngredients().getValue().get(position).setMeasurement(s.toString());
+                    viewModel.updateSelectedIngredientMeasurement(position, s.toString());
+                    /* viewModel.getSelectedIngredients()
+                            .getValue().get(position)
+                            .setMeasurement(s.toString()); */
                 }
             });
         }
@@ -98,7 +101,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
                             return true;
                         }
                     }
-                    ingredient.setMeasurement(parent.ingredientMeasurement.getText().toString());
                     viewModel.getSelectedIngredients().getValue().add(ingredient);
                     CustomCocktailFragment.selectedIngredientsListAdapter.notifyDataSetChanged();
                     return true;

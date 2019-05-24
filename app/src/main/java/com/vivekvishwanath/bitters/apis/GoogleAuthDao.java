@@ -31,7 +31,7 @@ public class GoogleAuthDao {
 
     public GoogleAuthDao(Context context) {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("383366225765-6ah1vg40prcfb8p4obf7eo7ttnsnuei3.apps.googleusercontent.com")
+                .requestIdToken(context.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
