@@ -111,14 +111,19 @@ public class FilterFragment extends Fragment {
                 });
             }
             if (spinner.getSelectedItem().equals(getString(R.string.filter_favorites_title))) {
-                viewModel.getFavoriteCocktails().observe(getActivity()
+                listAdapter = new CocktailListAdapter
+                        (viewModel.getFavoriteCocktails()
+                                .getValue(), viewModel, true);
+                recyclerView.setAdapter(listAdapter);
+
+                /* viewModel.getFavoriteCocktails().observe(getActivity()
                         , new Observer<ArrayList<Cocktail>>() {
                             @Override
                             public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
                                 listAdapter = new CocktailListAdapter(cocktails, viewModel, true);
                                 recyclerView.setAdapter(listAdapter);
                             }
-                        });
+                        }); */
             }
         }
 
