@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +49,7 @@ public class ViewCocktailFragment extends DialogFragment {
     private ConstraintLayout viewCocktailParent;
     private CheckBox alcoholicCheckbox;
     private ProgressBar progressBar;
+    private FloatingActionButton backButton;
     ArrayList<Ingredient> ingredientList;
     ArrayList<String> instructionsList;
 
@@ -73,6 +77,7 @@ public class ViewCocktailFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         cocktail = (Cocktail) getArguments().getSerializable(Cocktail.SERIALIZABLE_OCCKTAIL_KEY);
         return super.onCreateDialog(savedInstanceState);
+
     }
 
     @Nullable
@@ -87,6 +92,14 @@ public class ViewCocktailFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         context = getActivity();
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
+
+        backButton = view.findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         viewCocktailParent = view.findViewById(R.id.view_cocktail_layout);
 
@@ -155,4 +168,6 @@ public class ViewCocktailFragment extends DialogFragment {
             instructionsLayout.addView(textView);
          }
     }
+
+
 }
