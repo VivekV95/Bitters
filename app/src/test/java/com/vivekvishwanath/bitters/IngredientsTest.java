@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class IngredientTest {
+public class IngredientsTest {
 
     @Test
     public void createIngredientsObject_WithEmptyConstructor() {
