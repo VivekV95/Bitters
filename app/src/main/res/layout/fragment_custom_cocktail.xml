@@ -85,12 +85,19 @@
                 app:layout_constraintTop_toTopOf="@id/textview_all_ingredients_title"
                 app:layout_constraintBottom_toBottomOf="@id/textview_all_ingredients_title"/>
 
+            <EditText
+                android:id="@+id/ingredient_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingredient_search_hint"
+                app:layout_constraintTop_toBottomOf="@id/textview_all_ingredients_title"/>
+
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/custom_cocktail_all_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                app:layout_constraintTop_toBottomOf="@id/textview_all_ingredients_title"
-
+                app:layout_constraintTop_toBottomOf="@id/ingredient_search"
                 android:layout_margin="20dp">
             </android.support.v7.widget.RecyclerView>
 

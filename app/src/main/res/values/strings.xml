@@ -38,4 +38,5 @@
     <string name="register_button_text">Register</string>
     <string name="view_cocktail_name_placeholder">Cocktail Name</string>
     <string name="view_cocktail_is_alcoholic_checxbox_text">Is Alcoholic</string>
+    <string name="ingredient_search_hint">Search by name</string>
 </resources>

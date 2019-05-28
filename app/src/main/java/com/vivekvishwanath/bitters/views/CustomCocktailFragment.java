@@ -18,7 +18,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,7 @@ public class CustomCocktailFragment extends Fragment {
     private Button saveButton;
     private ImageView cocktailImage;
     private FloatingActionButton addImageButton;
+    private EditText searchIngredientText;
 
     MediaPlayer mediaPlayer;
 
@@ -99,6 +102,9 @@ public class CustomCocktailFragment extends Fragment {
 
         addImageButton = view.findViewById(R.id.add_image_button);
         addImageButton.setOnClickListener(imageListener);
+
+        searchIngredientText = view.findViewById(R.id.ingredient_search);
+        searchIngredientText.addTextChangedListener(searchIngredientTextWatcher);
 
         cocktailImage = view.findViewById(R.id.custom_cocktail_image);
         cocktailImage.setOnClickListener(imageListener);
@@ -168,6 +174,31 @@ public class CustomCocktailFragment extends Fragment {
                 mediaPlayer.start();
 
             }
+        }
+    };
+
+    TextWatcher searchIngredientTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String searchText = s.toString();
+            ArrayList<Ingredient> matchedIngredients = new ArrayList<>();
+            for (int i = 0; i < viewModel.getAllIngredients().getValue().size(); i++) {
+                if (viewModel.getAllIngredients().getValue().get(i).getName().contains(searchText)) {
+                    matchedIngredients.add(viewModel.getAllIngredients().getValue().get(i));
+                }
+            }
+            allIngredientsListAdapter = new IngredientListAdapter(matchedIngredients, context, viewModel, true, false);
+            allIngredientsRecyclerView.setAdapter(allIngredientsListAdapter);
         }
     };
 
