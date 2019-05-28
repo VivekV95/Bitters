@@ -29,6 +29,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.Utils.CocktailUtils;
@@ -172,7 +173,9 @@ public class CustomCocktailFragment extends Fragment {
                 viewModel.addCustomCocktail(cocktail);
                 Snackbar.make(getView(), "Cocktail Created!", Snackbar.LENGTH_LONG).show();
                 mediaPlayer.start();
-
+            } else {
+                Toast.makeText(context, "Make sure your cocktail has a name, between 2 and 15 ingredients" +
+                        ", an image, and instructions", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -190,15 +193,17 @@ public class CustomCocktailFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            String searchText = s.toString();
+            String searchText = s.toString().toLowerCase();
             ArrayList<Ingredient> matchedIngredients = new ArrayList<>();
-            for (int i = 0; i < viewModel.getAllIngredients().getValue().size(); i++) {
-                if (viewModel.getAllIngredients().getValue().get(i).getName().contains(searchText)) {
-                    matchedIngredients.add(viewModel.getAllIngredients().getValue().get(i));
+            if (viewModel.getAllIngredients().getValue() != null) {
+                for (int i = 0; i < viewModel.getAllIngredients().getValue().size(); i++) {
+                    if (viewModel.getAllIngredients().getValue().get(i).getName().toLowerCase().contains(searchText)) {
+                        matchedIngredients.add(viewModel.getAllIngredients().getValue().get(i));
+                    }
                 }
+                allIngredientsListAdapter = new IngredientListAdapter(matchedIngredients, context, viewModel, true, false);
+                allIngredientsRecyclerView.setAdapter(allIngredientsListAdapter);
             }
-            allIngredientsListAdapter = new IngredientListAdapter(matchedIngredients, context, viewModel, true, false);
-            allIngredientsRecyclerView.setAdapter(allIngredientsListAdapter);
         }
     };
 

@@ -41,7 +41,6 @@ public class CocktailViewModel extends ViewModel {
         cocktailsByName = new MutableLiveData<>();
         cocktailsByIngredients = new MutableLiveData<>();
         cocktailImage = new MutableLiveData<>();
-        currentFragment = new MutableLiveData<>();
     }
 
     public MutableLiveData<ArrayList<String>> getFavoriteIds() {
@@ -123,11 +122,20 @@ public class CocktailViewModel extends ViewModel {
     }
 
     public void setSelectedFragment(int fragment) {
+        if (currentFragment == null) {
+            currentFragment = new MutableLiveData<>();
+        }
         currentFragment.setValue(fragment);
     }
 
     public int getCurrentFragment() {
-        return currentFragment.getValue();
+        if (currentFragment == null) {
+            currentFragment = new MutableLiveData<>();
+            currentFragment.setValue(0);
+            return currentFragment.getValue(); 
+        } else {
+            return currentFragment.getValue();
+        }
     }
 
 }

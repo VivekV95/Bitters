@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(CocktailViewModel.class);
         viewModel.loadData(this, firebaseUser);
-        viewModel.setSelectedFragment(0);
 
         fragmentManager = getSupportFragmentManager();
     }
