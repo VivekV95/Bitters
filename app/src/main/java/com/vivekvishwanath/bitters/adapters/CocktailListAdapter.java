@@ -86,12 +86,11 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
             if (directory.exists()) {
                 File f = new File(directory, Integer.parseInt(cocktail.getDrinkId()) + ".png");
                 if (f.exists()) {
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
-                        holder.cocktailImage.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                        // Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+                        // holder.cocktailImage.setImageBitmap(bitmap);
+                        Picasso.get().load(f)
+                                .resize(700, 700).onlyScaleDown()
+                                .into(holder.cocktailImage);
                 }
             }
 

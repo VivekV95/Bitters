@@ -216,7 +216,7 @@ public class CocktailUtils {
             instructionsList = new ArrayList<>(Arrays.asList(instructionArray));
             for (int i = 0; i < instructionsList.size(); i++) {
                 String trimmed = instructionsList.get(i).trim();
-                instructionsList.set(i, trimmed); 
+                instructionsList.set(i, trimmed);
             }
         }
         return instructionsList;

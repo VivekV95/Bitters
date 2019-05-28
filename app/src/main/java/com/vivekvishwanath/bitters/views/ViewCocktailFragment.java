@@ -110,7 +110,9 @@ public class ViewCocktailFragment extends DialogFragment {
             alcoholicCheckbox.setChecked(false);
         }
         cocktailImage = view.findViewById(R.id.view_cocktail_image);
-        Picasso.get().load(cocktail.getPhotoUrl()).into(cocktailImage, new Callback() {
+        Picasso.get().load(cocktail.getPhotoUrl()).resize(700, 700)
+                .onlyScaleDown()
+                .into(cocktailImage, new Callback() {
             @Override
             public void onSuccess() {
                 progressBar.setVisibility(View.GONE);
@@ -125,12 +127,19 @@ public class ViewCocktailFragment extends DialogFragment {
         if (directory.exists()) {
             File f = new File(directory, Integer.parseInt(cocktail.getDrinkId()) + ".png");
             if (f.exists()) {
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
-                    cocktailImage.setImageBitmap(bitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                    Picasso.get().load(f)
+                            .resize(700, 700).onlyScaleDown()
+                            .into(cocktailImage, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            });
             }
         }
 
