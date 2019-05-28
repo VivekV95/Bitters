@@ -172,6 +172,7 @@ public class CustomCocktailFragment extends Fragment {
     };
 
     View.OnClickListener imageListener = new View.OnClickListener() {
+        @SuppressLint("RestrictedApi")
         @Override
         public void onClick(View v) {
             if (viewModel.getCocktailImage().getValue() == null) {

@@ -98,9 +98,17 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
             holder.cocktailParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    holder.cocktailParent.setBackgroundResource(android.R.color.holo_red_dark);
-                    viewModel.deleteCustomCocktail(cocktail);
-                    viewModel.getCustomCocktails();
+                    boolean deleted = false;
+                    File directory = new File(context.getFilesDir(), "imageDir");
+                    if (directory.exists()) {
+                        File myPath = new File(directory, cocktail.getDrinkId() + ".png");
+                        deleted = myPath.delete();
+                    }
+                    if (deleted) {
+                        holder.cocktailParent.setBackgroundResource(android.R.color.holo_red_dark);
+                        viewModel.deleteCustomCocktail(cocktail);
+                        viewModel.getCustomCocktails();
+                    }
                     return true;
                 }
             });
