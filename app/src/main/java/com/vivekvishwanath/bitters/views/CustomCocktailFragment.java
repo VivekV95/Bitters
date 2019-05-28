@@ -174,14 +174,21 @@ public class CustomCocktailFragment extends Fragment {
     View.OnClickListener imageListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            cocktail_id = createId();
-            imageIntent.putExtra("id", cocktail_id);
-            imageIntent.setType("image/*");
-            getActivity().setResult(Activity.RESULT_OK, imageIntent);
-            getActivity().startActivityForResult(imageIntent, IMAGE_REQUEST_CODE);
+            if (viewModel.getCocktailImage().getValue() == null) {
+                Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                cocktail_id = createId();
+                imageIntent.putExtra("id", cocktail_id);
+                imageIntent.setType("image/*");
+                getActivity().setResult(Activity.RESULT_OK, imageIntent);
+                getActivity().startActivityForResult(imageIntent, IMAGE_REQUEST_CODE);
+            } else {
+                viewModel.getCocktailImage().setValue(null);
+                cocktailImage.setImageDrawable(null);
+                addImageButton.setVisibility(View.VISIBLE);
+            }
         }
     };
+
 
     private boolean checkFields() {
         if (TextUtils.isEmpty(customCocktailName.getText().toString())) {
