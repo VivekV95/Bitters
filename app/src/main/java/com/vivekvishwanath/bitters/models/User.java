@@ -1,7 +1,5 @@
 package com.vivekvishwanath.bitters.models;
 
-import java.util.ArrayList;
-
 public class User {
     private String userName;
     private String userEmail;
