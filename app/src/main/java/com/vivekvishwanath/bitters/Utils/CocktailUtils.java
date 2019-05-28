@@ -214,6 +214,10 @@ public class CocktailUtils {
         if (cocktail.getInstructions() != null) {
             String[] instructionArray = cocktail.getInstructions().split("\\.");
             instructionsList = new ArrayList<>(Arrays.asList(instructionArray));
+            for (int i = 0; i < instructionsList.size(); i++) {
+                String trimmed = instructionsList.get(i).trim();
+                instructionsList.set(i, trimmed); 
+            }
         }
         return instructionsList;
     }

@@ -132,7 +132,7 @@ public class CocktailViewModel extends ViewModel {
         if (currentFragment == null) {
             currentFragment = new MutableLiveData<>();
             currentFragment.setValue(0);
-            return currentFragment.getValue(); 
+            return currentFragment.getValue();
         } else {
             return currentFragment.getValue();
         }
