@@ -24,6 +24,7 @@ public class CocktailViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Ingredient>> allIngredients;
     private MutableLiveData<ArrayList<Ingredient>> selectedIngredients;
     private MutableLiveData<Bitmap> cocktailImage;
+    private MutableLiveData<Integer> currentFragment;
     private CocktailRepository repository;
 
     public void loadData(Context context, FirebaseUser user) {
@@ -40,6 +41,7 @@ public class CocktailViewModel extends ViewModel {
         cocktailsByName = new MutableLiveData<>();
         cocktailsByIngredients = new MutableLiveData<>();
         cocktailImage = new MutableLiveData<>();
+        currentFragment = new MutableLiveData<>();
     }
 
     public MutableLiveData<ArrayList<String>> getFavoriteIds() {
@@ -118,6 +120,14 @@ public class CocktailViewModel extends ViewModel {
         if (position < selectedIngredients.getValue().size()) {
             selectedIngredients.getValue().get(position).setMeasurement(measurement);
         }
+    }
+
+    public void setSelectedFragment(int fragment) {
+        currentFragment.setValue(fragment);
+    }
+
+    public int getCurrentFragment() {
+        return currentFragment.getValue();
     }
 
 }

@@ -108,7 +108,7 @@ public class CocktailDbDao {
         return cocktailIds;
     }
 
-    public static ArrayList<Cocktail> getCocktailsbyGlass(String glass) {
+    public static ArrayList<Cocktail> getCocktailsByGlass(String glass) {
         if (retrofit != null && gson != null && cocktailDbInterface != null) {
             Call<JsonElement> call = cocktailDbInterface.getCocktailsByGlass(glass);
             try {
@@ -123,7 +123,7 @@ public class CocktailDbDao {
         return null;
     }
 
-    public static ArrayList<String> getCocktailsbyNoAlcohol() {
+    public static ArrayList<String> getCocktailsByNoAlcohol() {
         ArrayList<String> cocktailIds = new ArrayList<>();
         if (retrofit != null && gson != null && cocktailDbInterface != null) {
             Call<JsonElement> call = cocktailDbInterface.getCocktailsByAlcoholic("Non_Alcoholic");

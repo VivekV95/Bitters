@@ -46,6 +46,7 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
         this.viewModel = viewModel;
         this.canFavorite = canFavorite;
     }
+
     @NonNull
     @Override
     public CocktailListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {

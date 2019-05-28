@@ -18,7 +18,7 @@
             android:id="@+id/cocktail_card_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cocktail Name"
+            android:text="@string/cocktail_card_name_placeholder"
             android:textColor="@android:color/black"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

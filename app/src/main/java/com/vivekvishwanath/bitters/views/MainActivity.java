@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
 
     private FragmentManager fragmentManager;
-    private int imageCode = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_popular: {
                     if (!item.isChecked()) {
+                        viewModel.setSelectedFragment(0);
                         PopularFragment fragment = new PopularFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.navigation_search: {
                     if (!item.isChecked()) {
+                        viewModel.setSelectedFragment(1);
                         FilterFragment fragment = new FilterFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.navigation_create: {
                     if (!item.isChecked()) {
+                        viewModel.setSelectedFragment(2);
                         CustomCocktailFragment fragment = new CustomCocktailFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.navigation_maps: {
                     if (!item.isChecked()) {
+                        viewModel.setSelectedFragment(3);
                         ViewCustomFragment fragment = new ViewCustomFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
@@ -102,22 +105,31 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(CocktailViewModel.class);
         viewModel.loadData(this, firebaseUser);
+        viewModel.setSelectedFragment(0);
 
         fragmentManager = getSupportFragmentManager();
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (imageCode != 0) {
-            CustomCocktailFragment f = new CustomCocktailFragment();
+        if (viewModel.getCurrentFragment() == 0) {
+            PopularFragment f = new PopularFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.choice_fragment_container, f)
                     .commit();
-            imageCode = 0;
-        } else {
-            PopularFragment fragment = new PopularFragment();
+        } else if (viewModel.getCurrentFragment() == 1) {
+            FilterFragment fragment = new FilterFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.choice_fragment_container, fragment)
+                    .commit();
+        } else if (viewModel.getCurrentFragment() == 2) {
+            CustomCocktailFragment fragment = new CustomCocktailFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.choice_fragment_container, fragment)
+                    .commit();
+        } else if (viewModel.getCurrentFragment() == 3) {
+            CustomCocktailFragment fragment = new CustomCocktailFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.choice_fragment_container, fragment)
                     .commit();
@@ -131,9 +143,8 @@ public class MainActivity extends AppCompatActivity {
             Uri imageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                imageCode = requestCode;
+                viewModel.setSelectedFragment(2);
                 viewModel.setCustomCocktailImage(bitmap);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

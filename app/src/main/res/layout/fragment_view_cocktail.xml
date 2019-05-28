@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Cocktail Name"
+                android:text="@string/view_cocktail_name_placeholder"
                 android:textSize="24sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -46,7 +46,7 @@
 
             <CheckBox
                 android:id="@+id/view_cocktail_checkbox_alcoholic"
-                android:text="Is Alcoholic"
+                android:text="@string/view_cocktail_is_alcoholic_checxbox_text"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

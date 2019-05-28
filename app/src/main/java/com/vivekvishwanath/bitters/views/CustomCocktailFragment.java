@@ -213,7 +213,7 @@ public class CustomCocktailFragment extends Fragment {
             directory.mkdir();
         }
         File myPath = new File(directory, cocktailId + ".png");
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         try {
             fos = new FileOutputStream(myPath);
             image.compress(Bitmap.CompressFormat.PNG, 100, fos);

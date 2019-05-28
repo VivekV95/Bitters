@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity
     private EditText editTextPassword;
     private Button buttonSignIn;
     private CheckBox checkBoxRemember;
+    private ProgressBar loginProgressBar;
 
     private View.OnClickListener buttonGoogleListener = new View.OnClickListener() {
         @Override
@@ -89,6 +91,7 @@ public class LoginActivity extends AppCompatActivity
 
     private void buttonSignInClicked() {
         if (checkFields()) {
+            loginProgressBar.setVisibility(View.VISIBLE);
             handleLoginInfo();
                 FirebaseAuthDao.signIn(editTextEmail.getText().toString()
                         , editTextPassword.getText().toString(), new FirebaseAuthDao.SignInCallback() {
@@ -98,7 +101,9 @@ public class LoginActivity extends AppCompatActivity
                                     Intent intent = new Intent(context, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
+                                    loginProgressBar.setVisibility(View.GONE);
                                 } else {
+                                    loginProgressBar.setVisibility(View.GONE);
                                     Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -123,6 +128,8 @@ public class LoginActivity extends AppCompatActivity
 
         editTextEmail = findViewById(R.id.edit_text_email);
         editTextPassword = findViewById(R.id.edit_text_password);
+
+        loginProgressBar = findViewById(R.id.login_progress_bar);
 
         checkBoxRemember = findViewById(R.id.check_box_remember);
 

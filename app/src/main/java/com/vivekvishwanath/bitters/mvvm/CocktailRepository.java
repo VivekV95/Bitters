@@ -133,7 +133,7 @@ public class CocktailRepository {
             public void run() {
                 ArrayList<Cocktail> cocktails = new ArrayList<>();
                 liveCocktails.postValue(cocktails);
-                ArrayList<String> cocktailIds = CocktailDbDao.getCocktailsbyNoAlcohol();
+                ArrayList<String> cocktailIds = CocktailDbDao.getCocktailsByNoAlcohol();
                 for (int i = 0; i < cocktailIds.size(); i++) {
                     cocktails.add(CocktailDbDao.getCocktailById(cocktailIds.get(i)));
                 }
