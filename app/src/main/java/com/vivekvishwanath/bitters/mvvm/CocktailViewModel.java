@@ -12,7 +12,6 @@ import com.vivekvishwanath.bitters.models.Ingredient;
 import java.util.ArrayList;
 
 public class CocktailViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<Cocktail>> popularCocktails;
     private MutableLiveData<ArrayList<Cocktail>> favoriteCocktails;
     private MutableLiveData<Cocktail> randomCocktail;
     private MutableLiveData<ArrayList<Cocktail>> customCocktails;
@@ -31,7 +30,6 @@ public class CocktailViewModel extends ViewModel {
         repository = new CocktailRepository(context, user);
         favoriteIds = repository.getFavoriteIds();
         customIds = repository.getCustomIds();
-        popularCocktails = repository.getPopularCocktails();
         favoriteCocktails = repository.getFavoriteCocktails();
         randomCocktail = repository.getRandomCocktail();
         customCocktails = repository.getCustomCocktails();
@@ -49,10 +47,6 @@ public class CocktailViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<Ingredient>> getAllIngredients() {
         return allIngredients;
-    }
-
-    public MutableLiveData<ArrayList<Cocktail>> getPopularCocktails() {
-        return popularCocktails;
     }
 
     public MutableLiveData<ArrayList<Cocktail>> getFavoriteCocktails() {

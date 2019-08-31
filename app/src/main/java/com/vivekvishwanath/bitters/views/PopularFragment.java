@@ -17,6 +17,7 @@ import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.adapters.CocktailListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+import com.vivekvishwanath.bitters.viewmodel.PopularViewModel;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,8 @@ public class PopularFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private CocktailListAdapter listAdapter;
 
-    private CocktailViewModel viewModel;
+    private PopularViewModel popularViewModel;
+    private CocktailViewModel mainViewModel;
 
     public PopularFragment() {
         // Required empty public constructor
@@ -49,11 +51,12 @@ public class PopularFragment extends Fragment {
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
-        viewModel.getPopularCocktails().observe(this, new Observer<ArrayList<Cocktail>>() {
+        popularViewModel = ViewModelProviders.of(this).get(PopularViewModel.class);
+        mainViewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
+        popularViewModel.getPopularCocktails().observe(this, new Observer<ArrayList<Cocktail>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                listAdapter = new CocktailListAdapter(cocktails,viewModel, true);
+                listAdapter = new CocktailListAdapter(cocktails,mainViewModel, true);
                 recyclerView.setAdapter(listAdapter);
             }
         });
