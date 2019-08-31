@@ -163,13 +163,18 @@ public class CustomCocktailFragment extends Fragment {
         public void onClick(View v) {
             if (checkFields()) {
                 cocktail_id = createId();
-                Cocktail cocktail = new Cocktail(Integer.toString(cocktail_id));
+                final Cocktail cocktail = new Cocktail(Integer.toString(cocktail_id));
                 cocktail.setDrinkName(customCocktailName.getText().toString());
                 Ingredients ingredients = CocktailUtils.createIngredientsObject(viewModel.getSelectedIngredients().getValue());
                 cocktail.setIngredients(ingredients);
                 cocktail.getIngredients().setIngredientsId(Integer.parseInt(cocktail.getDrinkId()));
                 cocktail.setInstructions(instructionsText.getText().toString());
-                cocktail.setPhotoUrl(storeImage(viewModel.getCocktailImage().getValue(), cocktail_id));
+                storeImage(viewModel.getCocktailImage().getValue(), cocktail_id, new UriPathCallback() {
+                    @Override
+                    public void onUriPathReceived(String path) {
+                        cocktail.setPhotoUrl(path);
+                    }
+                });
                 viewModel.addCustomCocktail(cocktail);
                 Snackbar.make(getView(), "Cocktail Created!", Snackbar.LENGTH_LONG).show();
                 mediaPlayer.start();
@@ -250,26 +255,35 @@ public class CustomCocktailFragment extends Fragment {
         return num;
     }
 
-    private String storeImage(Bitmap bitmap, int cocktailId) {
-        Bitmap image = bitmap;
-        File directory = new File(context.getFilesDir(), "imageDir");
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
-        File myPath = new File(directory, cocktailId + ".png");
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(myPath);
-            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-            String uriPath = Uri.parse(myPath.getAbsolutePath()).toString();
-            return uriPath;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private void storeImage(final Bitmap bitmap,
+                              final int cocktailId, final UriPathCallback uriPathCallback) {
+        String uriPath = null;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap image = bitmap;
+                File directory = new File(context.getFilesDir(), "imageDir");
+                if (!directory.exists()) {
+                    directory.mkdir();
+                }
+                File myPath = new File(directory, cocktailId + ".png");
+                FileOutputStream fos;
+                try {
+                    fos = new FileOutputStream(myPath);
+                    image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.close();
+                    uriPathCallback.onUriPathReceived(Uri.parse(myPath.getAbsolutePath()).toString());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    interface UriPathCallback {
+        void onUriPathReceived(String path);
     }
 
 

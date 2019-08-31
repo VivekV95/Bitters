@@ -116,8 +116,8 @@ public class CocktailRepository {
             @Override
             public void run() {
                 ArrayList<Cocktail> cocktails = new ArrayList<>();
-                liveCocktails.postValue(cocktails);
                 ArrayList<String> cocktailIds = CocktailDbDao.getCocktailIdsByIngredient(name);
+                liveCocktails.postValue(cocktails);
                 for (int i = 0; i < cocktailIds.size(); i++) {
                     cocktails.add(CocktailDbDao.getCocktailById(cocktailIds.get(i)));
                 }

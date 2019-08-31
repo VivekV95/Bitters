@@ -59,7 +59,6 @@ public class FirebaseDatabaseDao {
                 @Override
                 public void onComplete(@Nullable DatabaseError databaseError
                         , @NonNull DatabaseReference databaseReference) {
-                    int i = 0;
                 }
             });
         }
@@ -74,7 +73,6 @@ public class FirebaseDatabaseDao {
                 @Override
                 public void onComplete(@Nullable DatabaseError databaseError
                         , @NonNull DatabaseReference databaseReference) {
-                    int i = 0;
                 }
             });
         }
