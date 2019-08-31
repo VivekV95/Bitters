@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class PopularViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<Cocktail>> popularCocktails;
+    private MutableLiveData<ArrayList<Cocktail>> popularCocktails = new MutableLiveData<>();
     private PopularRepository popularRepository;
 
     public MutableLiveData<ArrayList<Cocktail>> getPopularCocktails() {

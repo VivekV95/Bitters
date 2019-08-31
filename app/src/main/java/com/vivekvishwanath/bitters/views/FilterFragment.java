@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -24,21 +25,22 @@ import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.adapters.CocktailListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+import com.vivekvishwanath.bitters.viewmodel.FilterViewModel;
 
 import java.util.ArrayList;
 
 public class FilterFragment extends Fragment {
 
-    private CocktailViewModel viewModel;
+    private CocktailViewModel mainViewModel;
+    private FilterViewModel filterViewModel;
     private EditText searchBar;
+    private Context context;
     Spinner spinner;
     ArrayList<String> filterChoices;
 
     RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private CocktailListAdapter listAdapter;
-
-    Context context;
 
     public FilterFragment() {
         // Required empty public constructor
@@ -57,9 +59,10 @@ public class FilterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = view.getContext();
 
-        viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
+        filterViewModel = ViewModelProviders.of(this).get(FilterViewModel.class);
+        mainViewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
 
-        recyclerView = getView().findViewById(R.id.recycler_view_filter);
+        recyclerView = view.findViewById(R.id.recycler_view_filter);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -86,52 +89,43 @@ public class FilterFragment extends Fragment {
 
     private AdapterView.OnItemSelectedListener spinnerListener =
             new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if (spinner.getSelectedItem().equals(getString(R.string.filter_random_title))) {
-                viewModel.getRandomCocktail().observe(getActivity()
-                        , new Observer<Cocktail>() {
-                    @Override
-                    public void onChanged(@Nullable Cocktail cocktail) {
-                        ArrayList<Cocktail> cocktails = new ArrayList<>();
-                        cocktails.add(cocktail);
-                        listAdapter = new CocktailListAdapter(cocktails, viewModel, true);
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (spinner.getSelectedItem().equals(getString(R.string.filter_random_title))) {
+                        filterViewModel.getRandomCocktail().observe((FragmentActivity) context
+                                , new Observer<Cocktail>() {
+                                    @Override
+                                    public void onChanged(@Nullable Cocktail cocktail) {
+                                        ArrayList<Cocktail> cocktails = new ArrayList<>();
+                                        cocktails.add(cocktail);
+                                        listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
+                                        recyclerView.setAdapter(listAdapter);
+                                    }
+                                });
+                    }
+                    if (spinner.getSelectedItem().equals(getString(R.string.filter_alcoholic_title))) {
+                        filterViewModel.getCocktailsByNoAlcohol().observe((FragmentActivity) context
+                                , new Observer<ArrayList<Cocktail>>() {
+                                    @Override
+                                    public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
+                                        listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
+                                        recyclerView.setAdapter(listAdapter);
+                                    }
+                                });
+                    }
+                    if (spinner.getSelectedItem().equals(getString(R.string.filter_favorites_title))) {
+                        listAdapter = new CocktailListAdapter
+                                (mainViewModel.getFavoriteCocktails()
+                                        .getValue(), mainViewModel, true);
                         recyclerView.setAdapter(listAdapter);
                     }
-                });
-            }
-            if (spinner.getSelectedItem().equals(getString(R.string.filter_alcoholic_title))) {
-                viewModel.getCocktailsByNoAlcohol().observe(getActivity()
-                        , new Observer<ArrayList<Cocktail>>() {
-                    @Override
-                    public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                        listAdapter = new CocktailListAdapter(cocktails, viewModel, true);
-                        recyclerView.setAdapter(listAdapter);
-                    }
-                });
-            }
-            if (spinner.getSelectedItem().equals(getString(R.string.filter_favorites_title))) {
-                listAdapter = new CocktailListAdapter
-                        (viewModel.getFavoriteCocktails()
-                                .getValue(), viewModel, true);
-                recyclerView.setAdapter(listAdapter);
+                }
 
-                /* viewModel.getFavoriteCocktails().observe(getActivity()
-                        , new Observer<ArrayList<Cocktail>>() {
-                            @Override
-                            public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                                listAdapter = new CocktailListAdapter(cocktails, viewModel, true);
-                                recyclerView.setAdapter(listAdapter);
-                            }
-                        }); */
-            }
-        }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    };
+                }
+            };
 
     private TextWatcher searchBarWatcher = new TextWatcher() {
         @Override
@@ -148,19 +142,19 @@ public class FilterFragment extends Fragment {
         public void afterTextChanged(Editable s) {
             String choice = (String) spinner.getSelectedItem();
             if (choice.equals(getString(R.string.filter_name_title))) {
-                viewModel.getCocktailsByName(s.toString()).observe(getActivity(), new Observer<ArrayList<Cocktail>>() {
+                filterViewModel.getCocktailsByName(s.toString()).observe((FragmentActivity) context, new Observer<ArrayList<Cocktail>>() {
                     @Override
                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                        listAdapter = new CocktailListAdapter(cocktails, viewModel, true);
+                        listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
                         recyclerView.setAdapter(listAdapter);
                     }
                 });
             }
             if (choice.equals(getString(R.string.filter_ingredients_title))) {
-                viewModel.getCocktailsByIngredients(s.toString()).observe(getActivity(), new Observer<ArrayList<Cocktail>>() {
+                filterViewModel.getCocktailsByIngredients(s.toString()).observe((FragmentActivity) context, new Observer<ArrayList<Cocktail>>() {
                     @Override
                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                        listAdapter = new CocktailListAdapter(cocktails, viewModel, true);
+                        listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
                         recyclerView.setAdapter(listAdapter);
                     }
                 });
