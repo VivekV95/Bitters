@@ -66,16 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_create: {
                     if (!item.isChecked()) {
                         viewModel.setSelectedFragment(2);
-                        CustomCocktailFragment fragment = new CustomCocktailFragment();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.choice_fragment_container, fragment)
-                                .commit();
-                    }
-                    item.setChecked(!item.isChecked());
-                }
-                case R.id.navigation_maps: {
-                    if (!item.isChecked()) {
-                        viewModel.setSelectedFragment(3);
                         ViewCustomFragment fragment = new ViewCustomFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
@@ -116,24 +106,21 @@ public class MainActivity extends AppCompatActivity {
             PopularFragment f = new PopularFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.choice_fragment_container, f)
+                    .addToBackStack(null)
                     .commit();
         } else if (viewModel.getCurrentFragment() == 1) {
             FilterFragment fragment = new FilterFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.choice_fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
         } else if (viewModel.getCurrentFragment() == 2) {
             CustomCocktailFragment fragment = new CustomCocktailFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.choice_fragment_container, fragment)
-                    .commit();
-        } else if (viewModel.getCurrentFragment() == 3) {
-            CustomCocktailFragment fragment = new CustomCocktailFragment();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.choice_fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
         }
-
     }
 
     @Override

@@ -16,9 +16,4 @@
         android:icon="@drawable/ic_shaker"
         android:title="Create" />
 
-    <item
-        android:id="@+id/navigation_maps"
-        android:icon="@drawable/ic_pour"
-        android:title="View" />
-
 </menu>

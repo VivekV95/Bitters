@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ public class ViewCustomFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private CocktailListAdapter listAdapter;
+    private FloatingActionButton addCocktailButton;
 
     private CocktailViewModel viewModel;
 
@@ -47,6 +49,8 @@ public class ViewCustomFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        addCocktailButton = view.findViewById(R.id.add_cocktail_button);
+
         recyclerView = getView().findViewById(R.id.recycler_view_custom);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getContext(), 2);
@@ -58,6 +62,19 @@ public class ViewCustomFragment extends Fragment {
             public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
                 listAdapter = new CocktailListAdapter(cocktails,viewModel, false);
                 recyclerView.setAdapter(listAdapter);
+            }
+        });
+
+        addCocktailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomCocktailFragment fragment = new CustomCocktailFragment();
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.choice_fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }
