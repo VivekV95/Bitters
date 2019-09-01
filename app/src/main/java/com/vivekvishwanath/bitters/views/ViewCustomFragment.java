@@ -73,7 +73,7 @@ public class ViewCustomFragment extends Fragment {
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.choice_fragment_container, fragment)
-                        .addToBackStack(null)
+                        .addToBackStack("custom")
                         .commit();
             }
         });

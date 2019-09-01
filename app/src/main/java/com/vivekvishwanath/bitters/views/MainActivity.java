@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public static CocktailViewModel viewModel;
     private Context context;
 
-    private FragmentManager fragmentManager;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -45,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_popular: {
                     if (!item.isChecked()) {
+                        getSupportFragmentManager().popBackStack();
                         viewModel.setSelectedFragment(0);
                         PopularFragment fragment = new PopularFragment();
-                        fragmentManager.beginTransaction()
+                        getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
                                 .commit();
                     }
@@ -55,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.navigation_search: {
                     if (!item.isChecked()) {
+                        getSupportFragmentManager().popBackStack();
                         viewModel.setSelectedFragment(1);
                         FilterFragment fragment = new FilterFragment();
-                        fragmentManager.beginTransaction()
+                        getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
                                 .commit();
                     }
@@ -65,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.navigation_create: {
                     if (!item.isChecked()) {
+                        getSupportFragmentManager().popBackStack();
                         viewModel.setSelectedFragment(2);
                         ViewCustomFragment fragment = new ViewCustomFragment();
-                        fragmentManager.beginTransaction()
+                        getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.choice_fragment_container, fragment)
                                 .commit();
                     }
@@ -95,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(CocktailViewModel.class);
         viewModel.loadData(this, firebaseUser);
-
-        fragmentManager = getSupportFragmentManager();
     }
 
     @Override
@@ -104,21 +103,18 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (viewModel.getCurrentFragment() == 0) {
             PopularFragment f = new PopularFragment();
-            fragmentManager.beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.choice_fragment_container, f)
-                    .addToBackStack(null)
                     .commit();
         } else if (viewModel.getCurrentFragment() == 1) {
             FilterFragment fragment = new FilterFragment();
-            fragmentManager.beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.choice_fragment_container, fragment)
-                    .addToBackStack(null)
                     .commit();
         } else if (viewModel.getCurrentFragment() == 2) {
             CustomCocktailFragment fragment = new CustomCocktailFragment();
-            fragmentManager.beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.choice_fragment_container, fragment)
-                    .addToBackStack(null)
                     .commit();
         }
     }
@@ -155,4 +151,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
