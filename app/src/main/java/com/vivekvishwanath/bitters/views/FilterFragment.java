@@ -100,6 +100,7 @@ public class FilterFragment extends Fragment {
                                         cocktails.add(cocktail);
                                         listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
                                         recyclerView.setAdapter(listAdapter);
+                                        listAdapter.notifyDataSetChanged();
                                     }
                                 });
                     }
@@ -110,6 +111,7 @@ public class FilterFragment extends Fragment {
                                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
                                         listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
                                         recyclerView.setAdapter(listAdapter);
+                                        listAdapter.notifyDataSetChanged();
                                     }
                                 });
                     }
@@ -118,6 +120,7 @@ public class FilterFragment extends Fragment {
                                 (mainViewModel.getFavoriteCocktails()
                                         .getValue(), mainViewModel, true);
                         recyclerView.setAdapter(listAdapter);
+                        listAdapter.notifyDataSetChanged();
                     }
                 }
 
@@ -147,6 +150,7 @@ public class FilterFragment extends Fragment {
                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
                         listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
                         recyclerView.setAdapter(listAdapter);
+                        listAdapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -156,6 +160,7 @@ public class FilterFragment extends Fragment {
                     public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
                         listAdapter = new CocktailListAdapter(cocktails, mainViewModel, true);
                         recyclerView.setAdapter(listAdapter);
+                        listAdapter.notifyDataSetChanged();
                     }
                 });
             }

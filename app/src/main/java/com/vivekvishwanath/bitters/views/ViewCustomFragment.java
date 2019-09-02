@@ -3,6 +3,7 @@ package com.vivekvishwanath.bitters.views;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,20 +19,23 @@ import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.adapters.CocktailListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+import com.vivekvishwanath.bitters.viewmodel.CustomViewModel;
+import com.vivekvishwanath.bitters.viewmodel.ViewCustomViewModel;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewCustomFragment extends Fragment {
+public class ViewCustomFragment extends Fragment implements CustomCocktailFragment.SaveButtonClickListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private CocktailListAdapter listAdapter;
     private FloatingActionButton addCocktailButton;
 
-    private CocktailViewModel viewModel;
+    private ViewCustomViewModel viewModel;
+    private CocktailViewModel mainViewModel;
 
     public ViewCustomFragment() {
         // Required empty public constructor
@@ -56,11 +60,12 @@ public class ViewCustomFragment extends Fragment {
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(ViewCustomViewModel.class);
+        mainViewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
         viewModel.getCustomCocktails().observe(this, new Observer<ArrayList<Cocktail>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
-                listAdapter = new CocktailListAdapter(cocktails,viewModel, false);
+                listAdapter = new CocktailListAdapter(cocktails,mainViewModel, false);
                 recyclerView.setAdapter(listAdapter);
             }
         });
@@ -77,5 +82,10 @@ public class ViewCustomFragment extends Fragment {
                         .commit();
             }
         });
+    }
+
+    @Override
+    public void onSaveButtonClicked(Cocktail cocktail) {
+
     }
 }

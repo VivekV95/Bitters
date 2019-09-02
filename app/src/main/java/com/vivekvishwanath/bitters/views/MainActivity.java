@@ -122,14 +122,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == CustomCocktailFragment.IMAGE_REQUEST_CODE) {
-            Uri imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                viewModel.setSelectedFragment(2);
-                viewModel.setCustomCocktailImage(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            viewModel.setSelectedFragment(2);
+            getSupportFragmentManager()
+                    .findFragmentById(R.id.choice_fragment_container)
+                    .onActivityResult(requestCode, resultCode, data);
         }
     }
 

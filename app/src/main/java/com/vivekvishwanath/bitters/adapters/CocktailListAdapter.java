@@ -106,7 +106,6 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
                     if (deleted) {
                         holder.cocktailParent.setBackgroundResource(android.R.color.holo_red_dark);
                         viewModel.deleteCustomCocktail(cocktail);
-                        viewModel.getCustomCocktails();
                     }
                     return true;
                 }
@@ -144,7 +143,7 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
                 }
             });
         }
-        setEnterAnimation(holder.cocktailParent);
+        //setEnterAnimation(holder.cocktailParent);
     }
 
     public void setEnterAnimation(View viewToAnimate) {

@@ -32,6 +32,7 @@ import com.vivekvishwanath.bitters.adapters.IngredientListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+import com.vivekvishwanath.bitters.viewmodel.CustomViewModel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,6 +58,7 @@ public class ViewCocktailFragment extends DialogFragment {
 
     private Context context;
     private CocktailViewModel viewModel;
+    private CustomViewModel customViewModel;
 
     public ViewCocktailFragment() {
         // Required empty public constructor
@@ -151,7 +153,7 @@ public class ViewCocktailFragment extends DialogFragment {
         layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
-        listAdapter = new IngredientListAdapter(ingredientList, context, viewModel, false, false);
+        listAdapter = new IngredientListAdapter(ingredientList, context, customViewModel, false, false);
         recyclerView.setAdapter(listAdapter);
 
         instructionsLayout = view.findViewById(R.id.instructions_layout);

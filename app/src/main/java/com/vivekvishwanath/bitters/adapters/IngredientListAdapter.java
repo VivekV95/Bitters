@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+import com.vivekvishwanath.bitters.viewmodel.CustomViewModel;
 import com.vivekvishwanath.bitters.views.CustomCocktailFragment;
 
 import java.util.ArrayList;
@@ -26,12 +27,12 @@ import java.util.ArrayList;
 public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAdapter.ViewHolder> {
     private ArrayList<Ingredient> ingredientList;
     private Context context;
-    private CocktailViewModel viewModel;
+    private CustomViewModel viewModel;
     private boolean isClickable;
     private boolean isEditable;
 
     public IngredientListAdapter(ArrayList<Ingredient> ingredientList
-            , Context context, CocktailViewModel viewModel, boolean isClickable
+            , Context context, CustomViewModel viewModel, boolean isClickable
             , boolean isEditable) {
         this.ingredientList = ingredientList;
         this.context = context;
