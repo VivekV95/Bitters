@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.view.View;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,7 +30,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
-import com.vivekvishwanath.bitters.apis.GoogleAuthDao;
 import com.vivekvishwanath.bitters.views.MainActivity;
 
 public class LoginActivity extends AppCompatActivity
@@ -39,7 +38,6 @@ public class LoginActivity extends AppCompatActivity
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     private Context context;
-    private GoogleAuthDao googleAuthDao;
     public static final String REGISTER_FRAGMENT_TAG = "register_fragment";
     private static final String PREFS_NAME = "Bitters_prefs";
     private static final String PREFS_EMAIL_KEY = "Prefs_email";
@@ -53,17 +51,6 @@ public class LoginActivity extends AppCompatActivity
     private Button buttonSignIn;
     private CheckBox checkBoxRemember;
     private ProgressBar loginProgressBar;
-
-    private View.OnClickListener buttonGoogleListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            buttonGoogleClicked();
-        }
-    };
-
-    private void buttonGoogleClicked() {
-        googleAuthDao.signIn();
-    }
 
     private View.OnClickListener textViewRegisterListener = new View.OnClickListener() {
         @Override
@@ -123,9 +110,6 @@ public class LoginActivity extends AppCompatActivity
         textViewRegister = findViewById(R.id.text_view_register);
         textViewRegister.setOnClickListener(textViewRegisterListener);
 
-        buttonGoogle = findViewById(R.id.button_google);
-        buttonGoogle.setOnClickListener(buttonGoogleListener);
-
         editTextEmail = findViewById(R.id.edit_text_email);
         editTextPassword = findViewById(R.id.edit_text_password);
 
@@ -136,7 +120,6 @@ public class LoginActivity extends AppCompatActivity
         buttonSignIn = findViewById(R.id.button_sign_in);
         buttonSignIn.setOnClickListener(buttonSignInListener);
         mAuth = FirebaseAuth.getInstance();
-        googleAuthDao = new GoogleAuthDao(context);
         FirebaseAuthDao.initializeInstance(context);
     }
 
@@ -165,19 +148,6 @@ public class LoginActivity extends AppCompatActivity
                         }
                     });
         } */
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GoogleAuthDao.RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                GoogleSignInAccount account = result.getSignInAccount();
-            }
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            googleAuthDao.handleSignInResult(task);
-        }
     }
 
     @Override

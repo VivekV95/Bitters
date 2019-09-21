@@ -1,12 +1,11 @@
 package com.vivekvishwanath.bitters.mvvm;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseDatabaseDao;
 import com.vivekvishwanath.bitters.models.Cocktail;
-import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.sqlite.BittersSqlDbDao;
 
 import java.util.ArrayList;

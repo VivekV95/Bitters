@@ -2,9 +2,10 @@ package com.vivekvishwanath.bitters.views;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,13 +13,17 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -38,7 +43,7 @@ import com.vivekvishwanath.bitters.adapters.IngredientListAdapter;
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.models.Ingredients;
-import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+import com.vivekvishwanath.bitters.models.User;
 import com.vivekvishwanath.bitters.viewmodel.CustomViewModel;
 
 import java.io.File;
@@ -77,7 +82,7 @@ public class CustomCocktailFragment extends Fragment {
     public static final int IMAGE_REQUEST_CODE = 3;
     private int cocktail_id;
 
-    private SaveButtonClickListener listener;
+    private SaveButtonClickListener saveButtonClickListener;
 
     public CustomCocktailFragment() {
         // Required empty public constructor
@@ -88,6 +93,16 @@ public class CustomCocktailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        viewModel = ViewModelProviders.of(this).get(CustomViewModel.class);
+        if (getArguments() != null) {
+            try {
+                String uri = getArguments().getString("image");
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), Uri.parse(uri));
+                viewModel.setCustomCocktailImage(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return inflater.inflate(R.layout.fragment_custom_cocktail, container, false);
     }
 
@@ -97,7 +112,7 @@ public class CustomCocktailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         selectedIngredients = new ArrayList<>();
         context = getActivity();
-        viewModel = ViewModelProviders.of(this).get(CustomViewModel.class);
+
         if (viewModel.getSelectedIngredients().getValue() == null) {
             viewModel.getSelectedIngredients().setValue(selectedIngredients);
         }
@@ -181,7 +196,8 @@ public class CustomCocktailFragment extends Fragment {
                         cocktail.setPhotoUrl(path);
                     }
                 });
-                listener.onSaveButtonClicked(cocktail);
+                viewModel.addCustomCocktail(cocktail);
+                saveButtonClickListener.onSaveButtonClicked(cocktail);
                 Snackbar.make(getView(), "Cocktail Created!", Snackbar.LENGTH_LONG).show();
                 mediaPlayer.start();
             } else {
@@ -258,7 +274,7 @@ public class CustomCocktailFragment extends Fragment {
         viewModel.getCustomIds().observe(this, new Observer<ArrayList<Integer>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Integer> integers) {
-                if (integers != null &&integers.contains(num))
+                if (integers != null && integers.contains(num))
                     createId();
             }
         });
@@ -266,7 +282,7 @@ public class CustomCocktailFragment extends Fragment {
     }
 
     private void storeImage(final Bitmap bitmap,
-                              final int cocktailId, final UriPathCallback uriPathCallback) {
+                            final int cocktailId, final UriPathCallback uriPathCallback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -299,25 +315,4 @@ public class CustomCocktailFragment extends Fragment {
         void onSaveButtonClicked(Cocktail cocktail);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof SaveButtonClickListener) {
-            listener = (SaveButtonClickListener)context;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == CustomCocktailFragment.IMAGE_REQUEST_CODE) {
-            Uri imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                viewModel.setCustomCocktailImage(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

@@ -1,20 +1,20 @@
 package com.vivekvishwanath.bitters.views;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-
-import android.support.v4.app.FragmentManager;
-
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,18 +22,17 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
-import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
-import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
+import com.vivekvishwanath.bitters.viewmodel.CustomViewModel;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     private FirebaseUser firebaseUser;
     public static CocktailViewModel viewModel;
     private Context context;
+    private String imageUriString;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -112,8 +111,17 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.choice_fragment_container, fragment)
                     .commit();
         } else if (viewModel.getCurrentFragment() == 2) {
-            CustomCocktailFragment fragment = new CustomCocktailFragment();
+            ViewCustomFragment fragment = new ViewCustomFragment();
             getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.choice_fragment_container, fragment)
+                    .commit();
+        } else if (viewModel.getCurrentFragment() == 3) {
+            CustomCocktailFragment fragment = new CustomCocktailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("image", imageUriString);
+            fragment.setArguments(bundle);
+            getSupportFragmentManager()
+                    .beginTransaction()
                     .replace(R.id.choice_fragment_container, fragment)
                     .commit();
         }
@@ -122,10 +130,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == CustomCocktailFragment.IMAGE_REQUEST_CODE) {
-            viewModel.setSelectedFragment(2);
-            getSupportFragmentManager()
-                    .findFragmentById(R.id.choice_fragment_container)
-                    .onActivityResult(requestCode, resultCode, data);
+            imageUriString = data.getData().toString();
+                //currentImage = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                viewModel.setSelectedFragment(3);
         }
     }
 
@@ -151,4 +158,5 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
 }

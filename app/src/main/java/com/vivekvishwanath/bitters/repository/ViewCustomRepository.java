@@ -1,6 +1,6 @@
 package com.vivekvishwanath.bitters.repository;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.sqlite.BittersSqlDbDao;

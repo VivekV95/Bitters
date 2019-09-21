@@ -1,7 +1,7 @@
 package com.vivekvishwanath.bitters.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.repository.FilterRepository;

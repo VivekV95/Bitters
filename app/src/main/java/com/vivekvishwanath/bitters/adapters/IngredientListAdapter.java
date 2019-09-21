@@ -1,9 +1,9 @@
 package com.vivekvishwanath.bitters.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,7 +18,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.models.Ingredient;
-import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 import com.vivekvishwanath.bitters.viewmodel.CustomViewModel;
 import com.vivekvishwanath.bitters.views.CustomCocktailFragment;
 
