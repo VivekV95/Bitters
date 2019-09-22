@@ -2,6 +2,7 @@ package com.vivekvishwanath.bitters.apis;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -49,6 +50,7 @@ public class FirebaseAuthDao {
                                 callback.onRegistrationResult(true);
                             }
                         } else {
+                            Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             callback.onRegistrationResult(false);
                         }
                     }

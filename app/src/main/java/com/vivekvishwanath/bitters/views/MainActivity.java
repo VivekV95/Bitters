@@ -30,6 +30,11 @@ import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// Step 1: Add validations to login
+// Step 2: Add validations to registration
+// Step 3: Add dark theme
+// Step 4: 
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     public static CocktailViewModel viewModel;

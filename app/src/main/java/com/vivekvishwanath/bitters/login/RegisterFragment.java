@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
@@ -45,10 +46,7 @@ public class RegisterFragment extends Fragment {
                                 Snackbar.make(getView(), R.string.successful_registration
                                         , Snackbar.LENGTH_LONG).show();
                                 getActivity().onBackPressed();
-                            } else {
-                                Snackbar.make(getView(), R.string.unsuccessful_registration
-                                        , Snackbar.LENGTH_LONG).show();
-                            }
+                            } 
                         }
                     });
         }
@@ -128,9 +126,18 @@ public class RegisterFragment extends Fragment {
                 || TextUtils.isEmpty(editTextEmail.getText().toString())
                 || TextUtils.isEmpty(editTextPassword.getText().toString())
                 || TextUtils.isEmpty(editTextRetypePassword.getText().toString())) {
+            Toast.makeText(getContext(), "Make sure all fields are complete",
+                    Toast.LENGTH_LONG).show();
             return false;
         } else if (!editTextPassword.getText().toString()
                 .equals(editTextRetypePassword.getText().toString())) {
+            Toast.makeText(getContext(), "Passwords have to match",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        } else if(editTextPassword.getText().toString().length() < 8
+                || editTextPassword.getText().toString().length() > 64) {
+            Toast.makeText(getContext(), "Password has to be between 8 and 64 characters",
+                    Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
