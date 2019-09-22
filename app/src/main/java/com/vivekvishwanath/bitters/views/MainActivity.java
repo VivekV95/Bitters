@@ -14,7 +14,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,12 +22,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
+import com.vivekvishwanath.bitters.models.Cocktail;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
-import com.vivekvishwanath.bitters.viewmodel.CustomViewModel;
 
-import java.io.IOException;
-
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements CustomCocktailFragment.SaveButtonClickListener {
     private FirebaseUser firebaseUser;
     public static CocktailViewModel viewModel;
     private Context context;
@@ -159,4 +156,9 @@ public class MainActivity extends AppCompatActivity  {
         super.onBackPressed();
     }
 
+    @Override
+    public void onSaveButtonClicked(Cocktail cocktail) {
+        viewModel.addCustomCocktail(cocktail);
+        getSupportFragmentManager().popBackStack();
+    }
 }

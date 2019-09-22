@@ -58,4 +58,8 @@ public class CocktailViewModel extends ViewModel {
         }
     }
 
+    public void addCustomCocktail(Cocktail cocktail) {
+        repository.addCustomCocktail(cocktail);
+    }
+
 }

@@ -53,8 +53,4 @@ public class CustomViewModel extends ViewModel {
         return customIds;
     }
 
-    public void addCustomCocktail(Cocktail cocktail) {
-        customRepository.addCustomCocktail(cocktail);
-    }
-
 }

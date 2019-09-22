@@ -19,4 +19,5 @@ public class ViewCustomViewModel extends ViewModel {
         customCocktails = viewCustomRepository.getCustomCocktails();
         return customCocktails;
     }
+
 }

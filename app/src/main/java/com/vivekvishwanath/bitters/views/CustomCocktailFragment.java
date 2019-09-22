@@ -196,7 +196,6 @@ public class CustomCocktailFragment extends Fragment {
                         cocktail.setPhotoUrl(path);
                     }
                 });
-                viewModel.addCustomCocktail(cocktail);
                 saveButtonClickListener.onSaveButtonClicked(cocktail);
                 Snackbar.make(getView(), "Cocktail Created!", Snackbar.LENGTH_LONG).show();
                 mediaPlayer.start();

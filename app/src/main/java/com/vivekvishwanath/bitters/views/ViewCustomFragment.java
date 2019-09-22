@@ -26,7 +26,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ViewCustomFragment extends Fragment implements CustomCocktailFragment.SaveButtonClickListener {
+public class ViewCustomFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -81,10 +81,5 @@ public class ViewCustomFragment extends Fragment implements CustomCocktailFragme
                         .commit();
             }
         });
-    }
-
-    @Override
-    public void onSaveButtonClicked(Cocktail cocktail) {
-        listAdapter.notifyDataSetChanged();
     }
 }

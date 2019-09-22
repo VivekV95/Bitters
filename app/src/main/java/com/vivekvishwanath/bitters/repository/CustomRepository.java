@@ -36,12 +36,4 @@ public class CustomRepository {
         return ids;
     }
 
-    public void addCustomCocktail(final Cocktail cocktail) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                BittersSqlDbDao.createCocktail(cocktail);
-            }
-        }).start();
-    }
 }
