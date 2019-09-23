@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAdapter.ViewHolder> {
     private ArrayList<Ingredient> ingredientList;
-    private Context context;
     private CocktailViewModel viewModel;
     private boolean isClickable;
     private boolean isEditable;
@@ -34,7 +33,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
             , Context context, CocktailViewModel viewModel, boolean isClickable
             , boolean isEditable) {
         this.ingredientList = ingredientList;
-        this.context = context;
         this.viewModel = viewModel;
         this.isClickable = isClickable;
         this.isEditable = isEditable;
@@ -43,7 +41,6 @@ public class IngredientListAdapter extends RecyclerView.Adapter<IngredientListAd
     @NonNull
     @Override
     public IngredientListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_card_layout, parent, false);
         return new IngredientListAdapter.ViewHolder(view);
     }
