@@ -30,7 +30,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
-import com.vivekvishwanath.bitters.apis.GoogleAuthDao;
 import com.vivekvishwanath.bitters.views.MainActivity;
 
 public class LoginActivity extends AppCompatActivity
@@ -39,14 +38,13 @@ public class LoginActivity extends AppCompatActivity
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     private Context context;
-    private GoogleAuthDao googleAuthDao;
     public static final String REGISTER_FRAGMENT_TAG = "register_fragment";
     private static final String PREFS_NAME = "Bitters_prefs";
     private static final String PREFS_EMAIL_KEY = "Prefs_email";
     private static final String PREFS_PASSWORD_KEY = "Prefs_password";
     private static SharedPreferences preferences;
+    private static final int LOGIN_REQUEST_CODE = 12;
 
-    private SignInButton buttonGoogle;
     private TextView textViewRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -54,16 +52,7 @@ public class LoginActivity extends AppCompatActivity
     private CheckBox checkBoxRemember;
     private ProgressBar loginProgressBar;
 
-    private View.OnClickListener buttonGoogleListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            buttonGoogleClicked();
-        }
-    };
-
-    private void buttonGoogleClicked() {
-        googleAuthDao.signIn();
-    }
+    private boolean startMain = true;
 
     private View.OnClickListener textViewRegisterListener = new View.OnClickListener() {
         @Override
@@ -76,7 +65,7 @@ public class LoginActivity extends AppCompatActivity
         RegisterFragment fragment = new RegisterFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.register_fragment_container
+        transaction.replace(R.id.register_fragment_container
                 , fragment , REGISTER_FRAGMENT_TAG);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -96,15 +85,16 @@ public class LoginActivity extends AppCompatActivity
                 FirebaseAuthDao.signIn(editTextEmail.getText().toString()
                         , editTextPassword.getText().toString(), new FirebaseAuthDao.SignInCallback() {
                             @Override
-                            public void onSignInResult(boolean result) {
+                            public void onSignInResult(boolean result, String message) {
                                 if (result) {
                                     Intent intent = new Intent(context, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
+                                    startActivityForResult(intent, LOGIN_REQUEST_CODE);
+                                    finish();
                                     loginProgressBar.setVisibility(View.GONE);
                                 } else {
                                     loginProgressBar.setVisibility(View.GONE);
-                                    Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -123,9 +113,6 @@ public class LoginActivity extends AppCompatActivity
         textViewRegister = findViewById(R.id.text_view_register);
         textViewRegister.setOnClickListener(textViewRegisterListener);
 
-        buttonGoogle = findViewById(R.id.button_google);
-        buttonGoogle.setOnClickListener(buttonGoogleListener);
-
         editTextEmail = findViewById(R.id.edit_text_email);
         editTextPassword = findViewById(R.id.edit_text_password);
 
@@ -136,7 +123,6 @@ public class LoginActivity extends AppCompatActivity
         buttonSignIn = findViewById(R.id.button_sign_in);
         buttonSignIn.setOnClickListener(buttonSignInListener);
         mAuth = FirebaseAuth.getInstance();
-        googleAuthDao = new GoogleAuthDao(context);
         FirebaseAuthDao.initializeInstance(context);
 
         if (!getSharedPreferences("bitters", Context.MODE_PRIVATE)
@@ -150,9 +136,11 @@ public class LoginActivity extends AppCompatActivity
         super.onStart();
         firebaseUser = mAuth.getCurrentUser();
         if (firebaseUser != null) {
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            if (startMain) {
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            }
         }
         /* String email = preferences.getString(PREFS_EMAIL_KEY, null);
         String pass = preferences.getString(PREFS_PASSWORD_KEY, null);
@@ -172,18 +160,7 @@ public class LoginActivity extends AppCompatActivity
         } */
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GoogleAuthDao.RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                GoogleSignInAccount account = result.getSignInAccount();
-            }
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            googleAuthDao.handleSignInResult(task);
-        }
-    }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -208,5 +185,19 @@ public class LoginActivity extends AppCompatActivity
             editor.clear();
             editor.apply();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOGIN_REQUEST_CODE && resultCode == RESULT_OK) {
+            startMain = false;
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

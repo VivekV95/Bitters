@@ -144,7 +144,7 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
                 }
             });
         }
-        setEnterAnimation(holder.cocktailParent);
+        //setEnterAnimation(holder.cocktailParent);
     }
 
     public void setEnterAnimation(View viewToAnimate) {

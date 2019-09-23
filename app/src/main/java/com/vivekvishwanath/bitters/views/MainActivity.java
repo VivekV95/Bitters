@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.CocktailDbDao;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
+import com.vivekvishwanath.bitters.login.LoginActivity;
 import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 
@@ -200,4 +201,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(RESULT_OK);
+        finish();
+    }
 }

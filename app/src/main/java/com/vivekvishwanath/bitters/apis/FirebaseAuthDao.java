@@ -66,7 +66,7 @@ public class FirebaseAuthDao {
     }
 
     public interface SignInCallback {
-        void onSignInResult(boolean result);
+        void onSignInResult(boolean result, String error);
     }
 
     public static void signIn(String email, String password, final SignInCallback callback) {
@@ -76,9 +76,9 @@ public class FirebaseAuthDao {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             firebaseUser = mAuth.getCurrentUser();
-                            callback.onSignInResult(true);
+                            callback.onSignInResult(true, "");
                         } else {
-                            callback.onSignInResult(false);
+                            callback.onSignInResult(false, task.getException().getMessage());
                         }
                     }
                 });

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.vivekvishwanath.bitters.R;
@@ -37,6 +38,7 @@ public class FilterFragment extends Fragment {
     RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private CocktailListAdapter listAdapter;
+    private ProgressBar progressBar;
 
     Context context;
 
@@ -58,7 +60,7 @@ public class FilterFragment extends Fragment {
         context = view.getContext();
 
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
-
+        progressBar = view.findViewById(R.id.filter_progress);
         recyclerView = getView().findViewById(R.id.recycler_view_filter);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getContext(), 2);

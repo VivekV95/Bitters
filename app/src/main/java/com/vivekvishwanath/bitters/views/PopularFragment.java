@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.adapters.CocktailListAdapter;
@@ -27,6 +28,7 @@ public class PopularFragment extends Fragment {
     private CocktailListAdapter listAdapter;
 
     private CocktailViewModel viewModel;
+    private ProgressBar progressBar;
 
     public PopularFragment() {
         // Required empty public constructor
@@ -48,11 +50,15 @@ public class PopularFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
+        progressBar = view.findViewById(R.id.popular_progress);
 
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
         viewModel.getPopularCocktails().observe(this, new Observer<ArrayList<Cocktail>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Cocktail> cocktails) {
+                if (cocktails != null) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
                 listAdapter = new CocktailListAdapter(cocktails,viewModel, true);
                 recyclerView.setAdapter(listAdapter);
             }
