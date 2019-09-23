@@ -3,5 +3,5 @@
     <color name="colorPrimary">#C9000000</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">@android:color/holo_blue_dark</color>
-    <color name="navSeparator">@android:color/black</color>
+    <color name="navSeparator">@android:color/white</color>
 </resources>

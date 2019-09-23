@@ -1,10 +1,13 @@
 package com.vivekvishwanath.bitters.views;
 
+import android.app.UiModeManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
 
     private FragmentManager fragmentManager;
+    private boolean nightModeOn;
+    private SharedPreferences preferences;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -101,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.app_bar_title);
+
+        preferences = getSharedPreferences("bitters", Context.MODE_PRIVATE);
+        nightModeOn = preferences.getBoolean("night_mode", true);
+
 
         navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -169,8 +178,26 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
             finish();
+        } else if (id == R.id.action_darkmode) {
+            toggleNightMode();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleNightMode() {
+        if (nightModeOn && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            UiModeManager manager = context.getSystemService(UiModeManager.class);
+            manager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("night_mode", false);
+            editor.apply();
+        } else if(!nightModeOn && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+            UiModeManager manager = context.getSystemService(UiModeManager.class);
+            manager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("night_mode", true);
+            editor.apply();
+        }
     }
 
 }

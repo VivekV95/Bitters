@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -169,6 +170,11 @@ public class ViewCocktailFragment extends DialogFragment {
     private void addInstructions() {
         for (int i = 0; i < instructionsList.size(); i++) {
             TextView textView = new TextView(context);
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(16,16,16,16);
+            textView.setLayoutParams(layoutParams);
             textView.setText(instructionsList.get(i));
             textView.setTextSize(16);
             textView.setPadding(5,5,5,5);
