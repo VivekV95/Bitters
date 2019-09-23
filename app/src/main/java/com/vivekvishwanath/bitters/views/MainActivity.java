@@ -186,13 +186,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void toggleNightMode() {
         if (nightModeOn && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            UiModeManager manager = context.getSystemService(UiModeManager.class);
+            UiModeManager manager = context.getApplicationContext().getSystemService(UiModeManager.class);
             manager.setNightMode(UiModeManager.MODE_NIGHT_NO);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("night_mode", false);
             editor.apply();
         } else if(!nightModeOn && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
-            UiModeManager manager = context.getSystemService(UiModeManager.class);
+            UiModeManager manager = context.getApplicationContext().getSystemService(UiModeManager.class);
             manager.setNightMode(UiModeManager.MODE_NIGHT_YES);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("night_mode", true);

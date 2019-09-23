@@ -138,6 +138,11 @@ public class LoginActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         googleAuthDao = new GoogleAuthDao(context);
         FirebaseAuthDao.initializeInstance(context);
+
+        if (!getSharedPreferences("bitters", Context.MODE_PRIVATE)
+                .getBoolean("night_mode", false)) {
+
+        }
     }
 
     @Override

@@ -35,8 +35,6 @@ import com.vivekvishwanath.bitters.models.Ingredient;
 import com.vivekvishwanath.bitters.mvvm.CocktailViewModel;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ViewCocktailFragment extends DialogFragment {
@@ -48,7 +46,6 @@ public class ViewCocktailFragment extends DialogFragment {
     private ConstraintLayout viewCocktailParent;
     private CheckBox alcoholicCheckbox;
     private ProgressBar progressBar;
-    private FloatingActionButton backButton;
     ArrayList<Ingredient> ingredientList;
     ArrayList<String> instructionsList;
 
@@ -91,14 +88,6 @@ public class ViewCocktailFragment extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         context = getActivity();
         viewModel = ViewModelProviders.of(getActivity()).get(CocktailViewModel.class);
-
-        backButton = view.findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
 
         viewCocktailParent = view.findViewById(R.id.view_cocktail_layout);
 

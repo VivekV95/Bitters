@@ -94,7 +94,9 @@ public class FilterFragment extends Fragment {
                     @Override
                     public void onChanged(@Nullable Cocktail cocktail) {
                         ArrayList<Cocktail> cocktails = new ArrayList<>();
-                        cocktails.add(cocktail);
+                        if (cocktail != null) {
+                            cocktails.add(cocktail);
+                        }
                         listAdapter = new CocktailListAdapter(cocktails, viewModel, true);
                         recyclerView.setAdapter(listAdapter);
                     }

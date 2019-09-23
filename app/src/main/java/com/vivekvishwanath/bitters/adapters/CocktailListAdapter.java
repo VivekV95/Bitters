@@ -154,7 +154,10 @@ public class CocktailListAdapter extends RecyclerView.Adapter<CocktailListAdapte
 
     @Override
     public int getItemCount() {
-        return cocktailList.size();
+        if (cocktailList != null) {
+            return cocktailList.size();
+        }
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
