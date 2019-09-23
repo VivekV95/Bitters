@@ -120,7 +120,7 @@ public class CustomCocktailFragment extends Fragment {
 
         allIngredientsRecyclerView = getView().findViewById(R.id.custom_cocktail_all_ingredients);
         allIngredientsRecyclerView.setHasFixedSize(true);
-        allIngredientsLayoutManager = new GridLayoutManager(getContext(), 5);
+        allIngredientsLayoutManager = new GridLayoutManager(getContext(), 3);
         allIngredientsRecyclerView.setLayoutManager(allIngredientsLayoutManager);
 
         selectedIngredientsRecyclerView = view.findViewById(R.id.custom_cocktail_selected_ingredients);

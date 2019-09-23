@@ -26,8 +26,7 @@ import com.vivekvishwanath.bitters.R;
 import com.vivekvishwanath.bitters.apis.FirebaseAuthDao;
 import com.vivekvishwanath.bitters.views.MainActivity;
 
-public class LoginActivity extends AppCompatActivity
-        implements RegisterFragment.OnFragmentInteractionListener {
+public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
@@ -103,6 +102,7 @@ public class LoginActivity extends AppCompatActivity
         getSupportActionBar().setCustomView(R.layout.app_bar_title);
         context = this;
         preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        checkBoxRemember = findViewById(R.id.check_box_remember);
 
         textViewRegister = findViewById(R.id.text_view_register);
         textViewRegister.setOnClickListener(textViewRegisterListener);
@@ -112,22 +112,17 @@ public class LoginActivity extends AppCompatActivity
 
         loginProgressBar = findViewById(R.id.login_progress_bar);
 
-        checkBoxRemember = findViewById(R.id.check_box_remember);
-
         buttonSignIn = findViewById(R.id.button_sign_in);
         buttonSignIn.setOnClickListener(buttonSignInListener);
         mAuth = FirebaseAuth.getInstance();
         FirebaseAuthDao.initializeInstance(context);
-
-        if (!getSharedPreferences("bitters", Context.MODE_PRIVATE)
-                .getBoolean("night_mode", false)) {
-
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        editTextEmail.setText(preferences.getString(PREFS_EMAIL_KEY, ""));
+        editTextPassword.setText(preferences.getString(PREFS_PASSWORD_KEY, ""));
         firebaseUser = mAuth.getCurrentUser();
         if (firebaseUser != null) {
             if (startMain) {
@@ -136,30 +131,10 @@ public class LoginActivity extends AppCompatActivity
                 startActivityForResult(intent, LOGIN_REQUEST_CODE);
             }
         }
-        /* String email = preferences.getString(PREFS_EMAIL_KEY, null);
-        String pass = preferences.getString(PREFS_PASSWORD_KEY, null);
-        if (email != null && pass != null) {
-            FirebaseAuthDao.signIn(email, pass, new FirebaseAuthDao.SignInCallback() {
-                        @Override
-                        public void onSignInResult(boolean result) {
-                            if (result) {
-                                Intent intent = new Intent(context, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(context, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-        } */
     }
 
 
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 
     private boolean checkFields() {
         if (TextUtils.isEmpty(editTextEmail.getText().toString())
@@ -194,4 +169,5 @@ public class LoginActivity extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
     }
+
 }

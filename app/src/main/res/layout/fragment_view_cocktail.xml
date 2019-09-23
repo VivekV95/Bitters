@@ -19,14 +19,15 @@
 
             <TextView
                 android:id="@+id/view_cocktail_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/view_cocktail_name_placeholder"
                 android:textSize="24sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                android:padding="16dp"/>
 
             <ImageView
                 android:id="@+id/view_cocktail_image"
@@ -57,13 +58,13 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_margin="4dp"/>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/view_cocktail_checkbox_alcoholic"
-                android:layout_margin="10dp">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_margin="16dp">
+            </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
                 android:id="@+id/instructions_layout"
